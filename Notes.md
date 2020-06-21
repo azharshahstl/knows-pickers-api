@@ -1,8 +1,7 @@
 ## Classes I will need:  
 
-1. Map (to use with GoogleMaps)
-2. User (who will make lists of items)
-3. Items (objects on the list to be donated)
+1. User (who will make lists of items)
+2. Items (objects on the list to be donated)
 
 ## Relationships:
 1.  A User has many items.  

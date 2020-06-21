@@ -5,11 +5,9 @@ script.defer = true;
 script.async = true;
 
 const stl = { lat: 38.6270, lng: -90.1994 }
-var map;
-
 
 window.initMap = function() {
-    map = new google.maps.Map(document.getElementById("map"), {
+    const map = new google.maps.Map(document.getElementById("map"), {
         center: stl,
         zoom: 8
       });
