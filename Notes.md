@@ -14,5 +14,7 @@
 The above actions will all happen without refreshing the page.
 
 # Reach Goals
-1.  Require Users to have an account to list items.  Users will have to sign in and be verified.  
-2.  Include a filter so users can filter markers to only include ones with the type of items they are looking for.  
+1. Require Users to have an account to list items.  Users will have to sign in and be verified.  
+2. Include a filter so users can filter markers to only include ones with the type of items they are looking for.   
+3. Twenty-four hour automatic delete of all items with the user who listed them to be able to relist the items using a "relist" button.
+4. The App will allow for notifcations to appear (the App will open and display the marker) when a user is near a desired object.
