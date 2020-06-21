@@ -1,10 +1,21 @@
 
-var script = document.createElement('script');
-script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg&callback=initMap';
-script.defer = true;
-script.async = true;
 
+
+
+
+const script = document.createElement('script');
 const stl = { lat: 38.6270, lng: -90.1994 }
+
+document.addEventListener("DOMContentLoaded",() => {
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg&callback=initMap';
+
+
+})
+// const script = document.createElement('script');
+// script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg&callback=initMap';
+// script.defer = true;
+// script.async = true;
+// const stl = { lat: 38.6270, lng: -90.1994 }
 
 window.initMap = function() {
     const map = new google.maps.Map(document.getElementById("map"), {
