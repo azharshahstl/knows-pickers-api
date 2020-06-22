@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded",() => {
 window.initialMap = function() {
     const map = new google.maps.Map(document.getElementById("map"), {
         center: stl,
-        zoom: 8
+        zoom: 13
     });
     const marker = new google.maps.Marker({position: stl, map: map});
 
