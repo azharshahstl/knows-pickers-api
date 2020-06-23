@@ -1,6 +1,7 @@
 #map {
+    display: inline-block;
     height: 400px; 
-    width: 100%;  
+    width: 70%;  
    }
 html, body {
     height: 100%;
@@ -11,4 +12,9 @@ html, body {
 #title {
     text-align: center;
     background-color: peachpuff;
+}
+
+#addressButton {
+    display: inline-block;
+    width: 28%;
 }
