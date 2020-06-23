@@ -27,7 +27,7 @@ const loadAddressButton = () => {
     const h4 = document.createElement("h4");
     const button = document.createElement("button");
 
-    h4.innerHTML = "Click this button if you would like to create your address which will be used as a marker to place donated items.";
+    h4.innerHTML = "Click the following button if you would like to create the address which will be used to marke the location of donated items.";
     button.innerHTML = "Create Address";
     button.addEventListener("click", loadAddressForm())
 
