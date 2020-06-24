@@ -29,14 +29,12 @@ const loadAddressButton = () => {
 
     h4.innerHTML = "Click the following button if you would like to create the address which will be used to marke the location of donated items.";
     button.innerHTML = "Create Address";
-    button.addEventListener("click", loadAddressForm())
+    button.addEventListener("click", function () {
+        document.getElementById("create-address-form").style.display="block"
+    })
 
     address.appendChild(h4);
     address.appendChild(button);
-}
-
-const loadAddressForm = () => {
-    console.log("form")
 }
 
 

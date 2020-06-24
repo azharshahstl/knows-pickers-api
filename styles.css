@@ -1,13 +1,13 @@
 #map {
     display: inline-block;
-    height: 500px; 
+    height: 600px; 
     width: 70%; 
     border: 3px; 
    }
 html, body {
     /* height: 10%; */
     margin: 0;
-    padding: 5px;
+    padding: 2px;
   }
 
 #title {
@@ -15,8 +15,14 @@ html, body {
     background-color: peachpuff;
 }
 
-#addressButton {
+div#addressButton {
     float: right;
-    /* display: inline-block; */
     width: 28%;
+}
+form#create-address-form {
+    border: 3px solid #73AD21;
+    display: none;
+    bottom: 50px;
+    padding: 2px;
+
 }
