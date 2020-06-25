@@ -22,7 +22,12 @@ div#addressButton {
 form#create-address-form {
     border: 3px solid #73AD21;
     display: none;
-    bottom: 50px;
     padding: 2px;
+    width: 28%;
+    position: absolute;
+    top: 33%;
+    right: 20px;
+
+    
 
 }
