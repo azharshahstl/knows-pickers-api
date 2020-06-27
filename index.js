@@ -1,3 +1,6 @@
+BASE_URL = "http://localhost:3000"
+ADDRESS_URL = `${BASE_URL}/addresses`
+
 const mainBody = document.querySelector("main")
 const address = document.getElementById("addressButton");
 const script = document.createElement('script');
@@ -45,6 +48,23 @@ cancelButton.addEventListener("click", function (e) {
     e.preventDefault(); 
     document.getElementById("create-address-form").style.display="none";
     document.getElementById("addressButton").style.display="inline-block";
+})
+
+addButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    fetch(ADDRESS_URL, {
+        method: "POST", 
+        headers: {
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+          },
+        body: JSON.stringify({street_number: e.target.form.elements[0].value, city: e.target.form.elements[1].value, state: e.target.form.elements[2].value, zip_code: e.target.form.elements[3].value  })
+    })
+    .then(resp => resp.json())
+    .then(json => {
+        console.log("hello")
+    })
+
 })
 
 
