@@ -27,7 +27,16 @@ form#create-address-form {
     position: absolute;
     top: 33%;
     right: 20px;
+}
 
-    
+#add-button{
+    background-color: antiquewhite;
+}
 
+#cancel-button{
+    background-color: antiquewhite;
+}
+
+#create-address{
+    background-color: antiquewhite;
 }

@@ -1,6 +1,8 @@
 const mainBody = document.querySelector("main")
 const address = document.getElementById("addressButton");
 const script = document.createElement('script');
+const cancelButton = document.getElementById("cancel-button");
+const addButton = document.getElementById("add-button")
 document.head.appendChild(script);
 
 const stl = { lat: 38.6270, lng: -90.1994 }
@@ -26,8 +28,9 @@ window.initialMap = function() {
 const loadAddressButton = () => {
     const h4 = document.createElement("h4");
     const button = document.createElement("button");
-
+    
     h4.innerHTML = "Click the following button if you would like to create the address which will be used to marke the location of donated items.";
+    button.setAttribute("Id", "create-address")
     button.innerHTML = "Create Address";
     button.addEventListener("click", function () {
         document.getElementById("create-address-form").style.display="inline-block";
@@ -37,6 +40,12 @@ const loadAddressButton = () => {
     address.appendChild(h4);
     address.appendChild(button);
 }
+
+cancelButton.addEventListener("click", function (e) {
+    e.preventDefault(); 
+    document.getElementById("create-address-form").style.display="none";
+    document.getElementById("addressButton").style.display="inline-block";
+})
 
 
          
