@@ -65,16 +65,16 @@ addButton.addEventListener("click", function(e) {
     .then(json => {
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${json.street_number},+ ${json.city},+ ${json.state}&key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg`)
         .then(resp => resp.json())
-        .then(json => function(results, status) {
-            if (status == 'OK') {
-                map.setCenter(results[0].geometry.location);
+        .then(json =>  {
+            if (json.status == 'OK') {
+                map.setCenter(json.results[0].geometry.location);
                 const marker = new google.maps.Marker({
                     map: map,
-                    position: results[0].geometry.location
+                    position: json.results[0].geometry.location
                 });
               } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-              }
+                alert('Geocode was not successful for the following reason: ' + json.status);
+            }
         
         })
     })   
