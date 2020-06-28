@@ -9,6 +9,7 @@ const addButton = document.getElementById("add-button")
 document.head.appendChild(script);
 
 const stl = { lat: 38.6270, lng: -90.1994 }
+var map;
 
 document.addEventListener("DOMContentLoaded",() => {
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg&callback=initialMap';
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded",() => {
 // script.async = true;
 
 window.initialMap = function() {
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         center: stl,
         zoom: 13
     });
@@ -62,12 +63,20 @@ addButton.addEventListener("click", function(e) {
     })
     .then(resp => resp.json())
     .then(json => {
-        console.log("hello")
-    })
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${json.street_number},+ ${json.city},+ ${json.state}&key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg`)
+        .then(resp => resp.json())
+        .then(json => function(results, status) {
+            if (status == 'OK') {
+                map.setCenter(results[0].geometry.location);
+                const marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+        
+        })
+    })   
 
 })
-
-
-         
-
-   

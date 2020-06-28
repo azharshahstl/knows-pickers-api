@@ -22,8 +22,8 @@ div#addressButton {
 form#create-address-form {
     border: 3px solid #73AD21;
     display: none;
-    padding: 2px;
-    width: 28%;
+    padding: 4px;
+    width: 26%;
     position: absolute;
     top: 33%;
     right: 20px;
