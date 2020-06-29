@@ -59,13 +59,15 @@ addButton.addEventListener("click", function(e) {
             'Content-Type': 'application/json',
             "Accept": "application/json"
           },
-        body: JSON.stringify({street_number: e.target.form.elements[0].value, city: e.target.form.elements[1].value, state: e.target.form.elements[2].value, zip_code: e.target.form.elements[3].value  })
+        body: JSON.stringify({street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, city: e.target.form.elements[2].value, state: e.target.form.elements[3].value, zip_code: e.target.form.elements[4].value  })
     })
     .then(resp => resp.json())
     .then(json => {
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${json.street_number},+ ${json.city},+ ${json.state}&key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg`)
+        // document.getElementById("create-address-form").style.display="none";
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${json.street_number},+${json.street_name},+${json.city},+${json.state}&key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg`)
         .then(resp => resp.json())
-        .then(json =>  {
+        .then(json =>  { 
+            console.log(json)
             if (json.status == 'OK') {
                 map.setCenter(json.results[0].geometry.location);
                 const marker = new google.maps.Marker({
@@ -73,7 +75,7 @@ addButton.addEventListener("click", function(e) {
                     position: json.results[0].geometry.location
                 });
               } else {
-                alert('Geocode was not successful for the following reason: ' + json.status);
+                alert('Unable to locate address for the following reason: ' + json.status);
             }
         
         })
