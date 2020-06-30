@@ -70,6 +70,7 @@ addButton.addEventListener("click", function(e) {
     .then(json => {
         const address = `${json.street_number} + ${json.street_name} + ${json.city} + ${json.state} + ${json.zip_code}`;
         geocoder.geocode( { 'address': address}, function(results, status) {
+            console.log(status)
           if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
@@ -77,9 +78,10 @@ addButton.addEventListener("click", function(e) {
                 position: results[0].geometry.location
             });
           } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            alert('Unable to find that address for the following reason: ' + status);
           }
         });
+        document.getElementById("create-address-form").style.display="none";
     })   
-
+    
 })
