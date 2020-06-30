@@ -68,8 +68,9 @@ addButton.addEventListener("click", function(e) {
         .then(resp => resp.json())
         .then(json =>  { 
             console.log(json)
+            // debugger
             if (json.status == 'OK') {
-                map.setCenter(json.results[0].geometry.location);
+                // map.setCenter(json.results[0].geometry.location);
                 const marker = new google.maps.Marker({
                     map: map,
                     position: json.results[0].geometry.location

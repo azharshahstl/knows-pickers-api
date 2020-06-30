@@ -12,7 +12,6 @@ class AddressesController < ApplicationController
 
     def create 
         address = Address.create(address_params)
-        binding.pry
         render json: address
     end 
 
