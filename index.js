@@ -8,21 +8,19 @@ const cancelButton = document.getElementById("cancel-button");
 const addButton = document.getElementById("add-button")
 document.head.appendChild(script);
 
+
+
 var map;
 var geocoder;
 
 const stl = { lat: 38.6270, lng: -90.1994 }
 
 document.addEventListener("DOMContentLoaded",() => {
-    
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg&callback=initialMap';
-   script.src = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg'; 
+
+   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDv1pvIpepwVhFH7hFDoyKFg1dDBbCne_8&callback=initialMap`;
+   script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDv1pvIpepwVhFH7hFDoyKFg1dDBbCne_8`; 
    loadAddressButton();
 })
-// var script = document.createElement('script');
-// script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA99nF4WLsPeygHrRoJOTRH1Bk5DBJjoyg&callback=initMap';
-// script.defer = true;
-// script.async = true;
 
 window.initialMap = function() {
     geocoder = new google.maps.Geocoder();
@@ -33,6 +31,16 @@ window.initialMap = function() {
     const marker = new google.maps.Marker({position: stl, map: map});
 
 };
+
+fetch(ADDRESS_URL)
+.then(response => response.json())
+.then(addressData => {
+    addressData.forEach( (address) => {
+        const addressObject = new Address(address);
+        addressObject.geocodeLoader();
+    })
+    
+})
 
 const loadAddressButton = () => {
     const h4 = document.createElement("h4");
@@ -67,21 +75,6 @@ addButton.addEventListener("click", function(e) {
         body: JSON.stringify({street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, city: e.target.form.elements[2].value, state: e.target.form.elements[3].value, zip_code: e.target.form.elements[4].value  })
     })
     .then(resp => resp.json())
-    .then(json => {
-        const address = `${json.street_number} + ${json.street_name} + ${json.city} + ${json.state} + ${json.zip_code}`;
-        geocoder.geocode( { 'address': address}, function(results, status) {
-            console.log(status)
-          if (status == 'OK') {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-          } else {
-            alert('Unable to find that address for the following reason: ' + status);
-          }
-        });
-        document.getElementById("create-address-form").style.display="none";
-    })   
-    
+    .then(json => geocodeLoader(json))  
 })
+
