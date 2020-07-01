@@ -36,8 +36,8 @@ fetch(ADDRESS_URL)
 .then(response => response.json())
 .then(addressData => {
     addressData.forEach( (address) => {
-        const addressObject = new Address(address);
-        addressObject.geocodeLoader();
+        const seedObject = new Address(address);
+        seedObject.geocodeLoader();
     })
     
 })
@@ -75,6 +75,9 @@ addButton.addEventListener("click", function(e) {
         body: JSON.stringify({street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, city: e.target.form.elements[2].value, state: e.target.form.elements[3].value, zip_code: e.target.form.elements[4].value  })
     })
     .then(resp => resp.json())
-    .then(json => geocodeLoader(json))  
+    .then(json => {
+        const newAddress = new Address(json);
+        newAddress.geocodeLoader();
+    }) 
 })
 
