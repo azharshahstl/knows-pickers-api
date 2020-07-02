@@ -11,6 +11,7 @@ class Address {
 
     geocodeLoader() {
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
+        const addressId = this.id
         // console.log(this)
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode( { 'address': mapAddress}, function(results, status) {
@@ -26,7 +27,7 @@ class Address {
                 document.getElementById("create-address-form").style.display="none"; 
               } else {
                 alert('Unable to find that address for the following reason: ' + status);
-                fetch(`http://localhost:3000/addresses/${Address.allAddresses.length}`, {
+                fetch(`http://localhost:3000/addresses/${addressId}`, {
                     method: "DELETE", 
                     headers: {
                         'Content-Type': 'application/json',
