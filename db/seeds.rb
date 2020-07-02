@@ -6,10 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-address1 = Address.create(street_number: "3636", street_name: "Hartford Stteet", city: "St. Louis", state: "MO", zip_code: "63116")
-address2 = Address.create(street_number: "3943", street_name: "Juniata Street", city: "St. Louis", state: "MO", zip_code: "63116")
-address3 = Address.create(street_number: "3311", street_name: "Wyoming Ave", city: "St. Louis", state: "MO", zip_code: "63116")
-address4 = Address.create(street_number: "3618", street_name: "Utah Ave", city: "St. Louis", state: "MO", zip_code: "63116")
+address1 = Address.create(street_number: "3636", street_name: "Hartford Stteet", zip_code: "63116")
+address2 = Address.create(street_number: "3943", street_name: "Juniata Street", zip_code: "63116")
+address3 = Address.create(street_number: "3311", street_name: "Wyoming Ave", zip_code: "63116")
+address4 = Address.create(street_number: "3618", street_name: "Utah Ave", zip_code: "63116")
 
 items1 = Item.create(name: "scrap metal", address_id: 1)
 items2 = Item.create(name: "couch", address_id: 1)
