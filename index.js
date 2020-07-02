@@ -39,7 +39,6 @@ fetch(ADDRESS_URL)
         const seedObject = new Address(address);
         seedObject.geocodeLoader();
     })
-    
 })
 
 const loadAddressButton = () => {
@@ -72,7 +71,7 @@ addButton.addEventListener("click", function(e) {
             'Content-Type': 'application/json',
             "Accept": "application/json"
           },
-        body: JSON.stringify({street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, zip_code: e.target.form.elements[4].value  })
+        body: JSON.stringify({street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, zip_code: e.target.form.elements[2].value  })
     })
     .then(resp => resp.json())
     .then(json => {

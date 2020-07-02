@@ -15,10 +15,15 @@ class AddressesController < ApplicationController
         render json: address
     end 
 
+    def destroy 
+        address = Address.find(params[:id])
+        address.destroy 
+    end
+
 
     private 
 
     def address_params 
-        params.permit(:street_number, :street_name, :zip_code)
+        params.permit(:address, :street_number, :street_name, :zip_code)
     end
 end
