@@ -19,7 +19,7 @@ div#addressButton {
     float: right;
     width: 28%;
 }
-form#create-address-form {
+#create-address-form {
     border: 3px solid #73AD21;
     display: none;
     padding: 4px;
@@ -40,3 +40,12 @@ form#create-address-form {
 #create-address{
     background-color: antiquewhite;
 }
+
+#item-form {
+    border: 3px solid #73AD21;
+    /* display: none; */
+    padding: 4px;
+    width: 26%;
+    position: absolute;
+    top: 33%;
+    right: 20px;

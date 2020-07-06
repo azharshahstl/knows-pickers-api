@@ -22,7 +22,8 @@ class Address {
                 map.setCenter(results[0].geometry.location);
                 var marker = new google.maps.Marker({
                     map: map,
-                    position: results[0].geometry.location
+                    position: results[0].geometry.location,
+                    content: "Hello World"
                 });
                 document.getElementById("create-address-form").style.display="none"; 
               } else {
@@ -36,7 +37,12 @@ class Address {
                 })
               }
             });
-        return Address.allAddresses   
+        // return Address.allAddresses 
+    }
+
+    newAddressGeocodeLoader() {
+        this.geocodeLoader()
+        loadItemsForm(this);
     }
     
 }

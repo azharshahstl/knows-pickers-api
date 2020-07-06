@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded",() => {
 
    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDv1pvIpepwVhFH7hFDoyKFg1dDBbCne_8&callback=initialMap`;
    script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDv1pvIpepwVhFH7hFDoyKFg1dDBbCne_8`; 
+   document.getElementById("item-form").style.display="none"; 
    loadAddressButton();
 })
 
@@ -76,7 +77,29 @@ addButton.addEventListener("click", function(e) {
     .then(resp => resp.json())
     .then(json => {
         const newAddress = new Address(json);
-        newAddress.geocodeLoader();
+        newAddress.newAddressGeocodeLoader();
     }) 
 })
+
+const loadItemsForm = (address) => {
+document.getElementById("item-form").style.display="inline-block"; 
+const itemForm = document.getElementById("item-form");
+const form = document.createElement("form");
+form.setAttribute("data_id", address.id)
+form.setAttribute("class", "form");
+form.setAttribute('method',"POST");
+form.setAttribute('action',"#");
+
+const itemInput = document.createElement("input"); 
+itemInput.setAttribute('type',"text");
+itemInput.setAttribute('name',"name");
+
+const submitButton = document.createElement("input"); 
+submitButton.setAttribute('type',"submit");
+submitButton.setAttribute('value',"Submit");
+
+form.appendChild(itemInput);
+form.appendChild(submitButton);
+itemForm.appendChild(form);
+}
 
