@@ -100,22 +100,29 @@ const loadItemsForm = (address) => {
     itemInput.setAttribute('type',"text");
     itemInput.setAttribute('name',"name");
 
-    const addAnotherItemButton = document.createElement("button"); //changed input to button
+    const addAnotherItemButton = document.createElement("button"); 
     addAnotherItemButton.setAttribute("id","add-another-button");
-    // addAnotherItemButton.setAttribute('type',"submit");
     addAnotherItemButton.innerHTML = "Add Another Item"
     addAnotherItemButton.addEventListener("click", addAnotherItem);
 
     const submitItemsButton = document.createElement("button"); 
-    // submitItemsButton.setAttribute('type',"submit");
     submitItemsButton.setAttribute("id","add-items-button");
     submitItemsButton.innerHTML = "Submit Items"
     submitItemsButton.addEventListener("click", submitItems)
+
+    const cancelButton = document.createElement("button"); 
+    cancelButton.setAttribute("id","cancel-items-button");
+    cancelButton.innerHTML = "Cancel Items"
+    cancelButton.addEventListener("click", function(e){
+        document.getElementById("create-address-form").style.display="inline-block"; 
+        document.getElementById("item-form").style.display="none"; 
+    })
 
     form.appendChild(info)
     form.appendChild(itemInput);
     form.appendChild(addAnotherItemButton)
     form.appendChild(submitItemsButton);
+    form.appendChild(cancelButton);
     itemForm.appendChild(form);
 
 function addAnotherItem(e){

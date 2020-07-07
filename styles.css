@@ -67,3 +67,11 @@ div#addressButton {
     bottom: 0%;
     left: 0%
 }
+
+#cancel-items-button {
+    position: absolute;
+    float: right;
+    width: 28%; 
+    bottom: 0%;
+    left: 35%;
+}
