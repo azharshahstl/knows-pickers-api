@@ -83,14 +83,14 @@ addButton.addEventListener("click", function(e) {
 })
 
 const loadItemsForm = (address) => {
-
+    document.getElementById("create-address-form").style.display="none"; 
     document.getElementById("item-form").style.display="inline-block"; 
     var itemForm = document.getElementById("item-form");
 
     const form = document.createElement("form");
-    const info = document.createElement("h2")
+    const info = document.createElement("h3");
 
-    info.innerHTML = `Items to be left for donation at: <i>${address.street_number} ${address.street_name}, ${address.zip_code}</i>`
+    info.innerHTML = `Items to be left for donation at: <i><p>${address.street_number} ${address.street_name}, ${address.zip_code}</p></i>`
     form.setAttribute("data-id", address.id)
     form.setAttribute("class", "form");
     form.setAttribute('method',"POST");
@@ -100,15 +100,17 @@ const loadItemsForm = (address) => {
     itemInput.setAttribute('type',"text");
     itemInput.setAttribute('name',"name");
 
-    const addAnotherItemButton = document.createElement("input"); 
-    addAnotherItemButton.setAttribute('class',"add-another-button");
-    addAnotherItemButton.setAttribute('type',"submit");
-    addAnotherItemButton.setAttribute('value',"Add Another Item");
+    const addAnotherItemButton = document.createElement("button"); //changed input to button
+    addAnotherItemButton.setAttribute("id","add-another-button");
+    // addAnotherItemButton.setAttribute('type',"submit");
+    addAnotherItemButton.innerHTML = "Add Another Item"
+    addAnotherItemButton.addEventListener("click", addAnotherItem);
 
-    const submitItemsButton = document.createElement("input"); 
-    submitItemsButton.setAttribute('type',"submit");
-    submitItemsButton.setAttribute('id',"add-items-button");
-    submitItemsButton.setAttribute('value',"Submit Items List");
+    const submitItemsButton = document.createElement("button"); 
+    // submitItemsButton.setAttribute('type',"submit");
+    submitItemsButton.setAttribute("id","add-items-button");
+    submitItemsButton.innerHTML = "Submit Items"
+    submitItemsButton.addEventListener("click", submitItems)
 
     form.appendChild(info)
     form.appendChild(itemInput);
@@ -116,19 +118,25 @@ const loadItemsForm = (address) => {
     form.appendChild(submitItemsButton);
     itemForm.appendChild(form);
 
-    addAnotherItemButton.addEventListener("click", function(e) {
+function addAnotherItem(e){
         e.preventDefault();
         const addAnotherItemButton = document.querySelector("add-another-button");
         const form = document.getElementsByClassName("form")[1]; 
         const itemInput = document.createElement("input");
         itemInput.setAttribute('type',"text");
         itemInput.setAttribute('name',"name");
-        form.appendChild(itemInput);
+        // form.appendChild(itemInput);
+        form.insertBefore(itemInput, form.childNodes[1])
         itemForm.appendChild(form);
-    
-    
-    })
+    }
 
+    
+
+}
+
+function submitItems(e){
+    e.preventDefault(); 
+    console.log(e);
 }
 
 

@@ -25,7 +25,6 @@ class Address {
                     position: results[0].geometry.location,
                     content: "Hello World"
                 });
-                document.getElementById("create-address-form").style.display="none"; 
               } else {
                 alert('Unable to find that address for the following reason: ' + status);
                 fetch(`http://localhost:3000/addresses/${addressId}`, {

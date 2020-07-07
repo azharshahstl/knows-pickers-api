@@ -52,6 +52,18 @@ div#addressButton {
 }
 
 #add-items-button {
+    position: absolute;
     float: right;
     width: 28%; 
+    bottom: 0%;
+    right:0%
+
+}
+
+#add-another-button {
+    position: absolute;
+    float: right;
+    width: 28%; 
+    bottom: 0%;
+    left: 0%
 }
