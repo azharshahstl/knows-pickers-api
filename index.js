@@ -18,8 +18,8 @@ const stl = { lat: 38.6270, lng: -90.1994 }
 
 document.addEventListener("DOMContentLoaded",() => {
 
-   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDv1pvIpepwVhFH7hFDoyKFg1dDBbCne_8&callback=initialMap`;
-   script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDv1pvIpepwVhFH7hFDoyKFg1dDBbCne_8`; 
+   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs&callback=initialMap`;
+   script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs`; 
    document.getElementById("item-form").style.display="none"; 
    loadAddressButton();
 })
@@ -119,12 +119,10 @@ const loadItemsForm = (address) => {
     addAnotherItemButton.addEventListener("click", function(e) {
         e.preventDefault();
         const addAnotherItemButton = document.querySelector("add-another-button");
-        const form = document.querySelector("data-id"); 
+        const form = document.getElementsByClassName("form")[1]; 
         const itemInput = document.createElement("input");
         itemInput.setAttribute('type',"text");
         itemInput.setAttribute('name',"name");
-        // addAnotherItemButton.setAttribute('type',"submit");
-        // addAnotherItemButton.setAttribute('value',"Add Another Item");
         form.appendChild(itemInput);
         itemForm.appendChild(form);
     
