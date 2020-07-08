@@ -1,5 +1,6 @@
 BASE_URL = "http://localhost:3000"
 ADDRESS_URL = `${BASE_URL}/addresses`
+ITEMS_URL = `${BASE_URL}/items`
 
 const mainBody = document.querySelector("main")
 const address = document.getElementById("addressButton");
@@ -91,7 +92,7 @@ const loadItemsForm = (address) => {
     const info = document.createElement("h3");
 
     info.innerHTML = `Items to be left for donation at: <i><p>${address.street_number} ${address.street_name}, ${address.zip_code}</p></i>`
-    form.setAttribute("data-id", address.id)
+    form.setAttribute("id", address.id)
     form.setAttribute("class", "form");
     form.setAttribute('method',"POST");
     form.setAttribute('action',"#");
@@ -132,7 +133,6 @@ function addAnotherItem(e){
         const itemInput = document.createElement("input");
         itemInput.setAttribute('type',"text");
         itemInput.setAttribute('name',"name");
-        // form.appendChild(itemInput);
         form.insertBefore(itemInput, form.childNodes[1])
         itemForm.appendChild(form);
     }
@@ -143,8 +143,26 @@ function addAnotherItem(e){
 
 function submitItems(e){
     e.preventDefault(); 
-    console.log(e);
+    const itemObject = {address_id: e.target.form.id};
+    const array = e.target.form.elements
+        for (let index = 0; index < array.length-3; indexx++){
+            itemObject.push(`name: ${array[index]}`);
+            fetch(ITEMS_URL, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(itemObject)
+            })
+            .then(response => response.json())
+            .then(json => {
+                const item = new Item(json);
+                item.addItemToMarker();
+            })
+        }
 }
+
 
 
 
