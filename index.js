@@ -143,30 +143,22 @@ function addAnotherItem(e){
 
 function submitItems(e){
     e.preventDefault(); 
-    
     const array = e.target.form.elements
         for (let index = 0; index < array.length-3; index++){
-            // console.log(e)
-            // debugger
-            var itemObject = {address_id: e.target.form.dataset.id};
-            itemObject.name = array[index].value;
-            //  debugger
             fetch(ITEMS_URL, {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
                     "Accept": "application/json"
                 },
-                body: JSON.stringify(itemObject)
+                body: JSON.stringify({address_id: e.target.form.dataset.id, name: array[index].value })
             })
             .then(response => response.json())
             .then(json => {
-                console.log(json)
+                const addressObject = new Address(json)
+                console.log(addressObject);
                 debugger
-                // const item = new Item(json);
-                // item.addItemToMarker();
             })
-            itemObject = {}
         }
 }
 

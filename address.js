@@ -5,6 +5,7 @@ class Address {
         this.street_number = addressDataObject.street_number
         this.street_name = addressDataObject.street_name
         this.zip_code = addressDataObject.zip_code
+        this.items = addressDataObject.items
         Address.allAddresses.push(this)
         
     }
@@ -22,8 +23,7 @@ class Address {
                 map.setCenter(results[0].geometry.location);
                 var marker = new google.maps.Marker({
                     map: map,
-                    position: results[0].geometry.location,
-                    content: "Hello World"
+                    position: results[0].geometry.location
                 });
               } else {
                 alert('Unable to find that address for the following reason: ' + status);
