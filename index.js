@@ -163,8 +163,8 @@ function submitItems(e){
             .then(json => {
                 console.log(json)
                 debugger
-                const item = new Item(json);
-                item.addItemToMarker();
+                // const item = new Item(json);
+                // item.addItemToMarker();
             })
             itemObject = {}
         }
