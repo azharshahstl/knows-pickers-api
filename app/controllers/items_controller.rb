@@ -11,14 +11,15 @@ class ItemsController < ApplicationController
     end 
 
     def create 
-        address = Address.find(params[address_id])
-        item = address.build({name: name})
+        address = Address.find(params[:address_id])
+        item = address.items.build(name: params[:name])
         item.save
-        render json: item
+        render json: address
     end 
 
     private 
 
     def items_params 
-        params.require(:adress).permit(:name)
+        params.permit(:address_id, :name)
+    end
 end

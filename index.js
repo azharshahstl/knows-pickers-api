@@ -6,7 +6,7 @@ const mainBody = document.querySelector("main")
 const address = document.getElementById("addressButton");
 const script = document.createElement('script');
 const cancelButton = document.getElementById("cancel-button");
-const addButton = document.getElementById("add-button")
+const addAddressButton = document.getElementById("add-button")
 
 document.head.appendChild(script);
 
@@ -35,14 +35,14 @@ window.initialMap = function() {
 
 };
 
-fetch(ADDRESS_URL)
-.then(response => response.json())
-.then(addressData => {
-    addressData.forEach( (address) => {
-        const seedObject = new Address(address);
-        seedObject.geocodeLoader();
-    })
-})
+// fetch(ADDRESS_URL)
+// .then(response => response.json())
+// .then(addressData => {
+//     addressData.forEach( (address) => {
+//         const seedObject = new Address(address);
+//         seedObject.geocodeLoader();
+//     })
+// })
 
 const loadAddressButton = () => {
     const h4 = document.createElement("h4");
@@ -66,7 +66,7 @@ cancelButton.addEventListener("click", function (e) {
     document.getElementById("addressButton").style.display="inline-block";
 })
 
-addButton.addEventListener("click", function(e) {
+addAddressButton.addEventListener("click", function(e) {
     e.preventDefault();
     fetch(ADDRESS_URL, {
         method: "POST", 
@@ -74,12 +74,12 @@ addButton.addEventListener("click", function(e) {
             'Content-Type': 'application/json',
             "Accept": "application/json"
           },
-        body: JSON.stringify({street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, zip_code: e.target.form.elements[2].value  })
+        body: JSON.stringify({address: {street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, zip_code: e.target.form.elements[2].value  }})
     })
     .then(resp => resp.json())
     .then(json => {
         const newAddress = new Address(json);
-        newAddress.newAddressGeocodeLoader();
+        loadItemsForm(newAddress);// newAddress.newAddressGeocodeLoader();
     }) 
 })
 
@@ -92,7 +92,7 @@ const loadItemsForm = (address) => {
     const info = document.createElement("h3");
 
     info.innerHTML = `Items to be left for donation at: <i><p>${address.street_number} ${address.street_name}, ${address.zip_code}</p></i>`
-    form.setAttribute("id", address.id)
+    form.setAttribute("data-id", address.id)
     form.setAttribute("class", "form");
     form.setAttribute('method',"POST");
     form.setAttribute('action',"#");
@@ -143,10 +143,14 @@ function addAnotherItem(e){
 
 function submitItems(e){
     e.preventDefault(); 
-    const itemObject = {address_id: e.target.form.id};
+    
     const array = e.target.form.elements
-        for (let index = 0; index < array.length-3; indexx++){
-            itemObject.push(`name: ${array[index]}`);
+        for (let index = 0; index < array.length-3; index++){
+            // console.log(e)
+            // debugger
+            var itemObject = {address_id: e.target.form.dataset.id};
+            itemObject.name = array[index].value;
+            //  debugger
             fetch(ITEMS_URL, {
                 method: 'POST', 
                 headers: {
@@ -157,9 +161,12 @@ function submitItems(e){
             })
             .then(response => response.json())
             .then(json => {
+                console.log(json)
+                debugger
                 const item = new Item(json);
                 item.addItemToMarker();
             })
+            itemObject = {}
         }
 }
 
