@@ -8,6 +8,7 @@ const script = document.createElement('script');
 const cancelButton = document.getElementById("cancel-button");
 const addAddressButton = document.getElementById("add-button")
 
+
 document.head.appendChild(script);
 
 
@@ -48,16 +49,17 @@ const loadAddressButton = () => {
     const h4 = document.createElement("h4");
     const button = document.createElement("button");
     
-    h4.innerHTML = "Click the following button if you would like to create the address which will be used to marke the location of the items you are donating.";
-    button.setAttribute("Id", "create-address")
+    h4.innerHTML = "Click the following button if you would like to create the address which will be used to mark the location of the items you are donating.";
+    button.setAttribute("id", "create-address")
     button.innerHTML = "Create Address";
+
+    address.appendChild(h4);
+    address.appendChild(button);
+    
     button.addEventListener("click", function () {
         document.getElementById("create-address-form").style.display="inline-block";
         document.getElementById("addressButton").style.display="none";
     })
-
-    address.appendChild(h4);
-    address.appendChild(button);
 }
 
 cancelButton.addEventListener("click", function (e) {
@@ -93,6 +95,7 @@ const loadItemsForm = (address) => {
 
     info.innerHTML = `Items to be left for donation at: <i><p>${address.street_number} ${address.street_name}, ${address.zip_code}</p></i>`
     form.setAttribute("data-id", address.id)
+    form.setAttribute("id", "address-form");
     form.setAttribute("class", "form");
     form.setAttribute('method',"POST");
     form.setAttribute('action',"#");
@@ -110,7 +113,7 @@ const loadItemsForm = (address) => {
     submitItemsButton.setAttribute("id","add-items-button");
     submitItemsButton.innerHTML = "Submit Items"
     submitItemsButton.addEventListener("click", submitItems)
-
+    
     const cancelButton = document.createElement("button"); 
     cancelButton.setAttribute("id","cancel-items-button");
     cancelButton.innerHTML = "Cancel Items"
@@ -141,26 +144,60 @@ function addAnotherItem(e){
 
 }
 
-function submitItems(e){
-    e.preventDefault(); 
+// function submitItems(e){
+//     e.preventDefault(); 
+//     const array = e.target.form.elements
+//         for (let index = 0; index < array.length-3; index++){
+            // fetch(ITEMS_URL, {
+            //     method: 'POST', 
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         "Accept": "application/json"
+            //     },
+            //     body: JSON.stringify({address_id: e.target.form.dataset.id, name: array[index].value })
+            // })
+//             .then(response => response.json())
+//             .then(json => {
+//                 // const addressObject = new Address(json)
+//                 // console.log(Address.allAddresses)             
+//             })
+            
+            
+//         } 
+        
+// }
+
+async function getAddressWithItems(e) {
+    // console.log(e);
+    // debugger;
+    const tempArray = [];
     const array = e.target.form.elements
-        for (let index = 0; index < array.length-3; index++){
-            fetch(ITEMS_URL, {
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify({address_id: e.target.form.dataset.id, name: array[index].value })
-            })
-            .then(response => response.json())
-            .then(json => {
-                const addressObject = new Address(json)
-                console.log(addressObject);
-                debugger
-            })
-        }
+    for (let index = 0; index < array.length-3; index++){
+       
+           const fetchResponse = await fetch(ITEMS_URL, {
+               method: 'POST', 
+               headers: {
+                   'Content-Type': 'application/json',
+                   "Accept": "application/json"
+               },
+               body: JSON.stringify({address_id: e.target.form.dataset.id, name: array[index].value })  
+           })
+           const data = await fetchResponse.json();
+           tempArray.push(data);
+    }
+       const newAddress = new Address(tempArray[tempArray.length - 1]);
+       newAddress.geocodeLoader();     
+};
+
+function submitItems(e) {
+    e.preventDefault(); 
+    getAddressWithItems(e); 
+    document.getElementById("create-address-form").reset();      
 }
+
+
+
+
 
 
 
