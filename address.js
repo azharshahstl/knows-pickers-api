@@ -9,18 +9,9 @@ class Address {
         Address.allAddresses.push(this)
         
     }
-    
-
-    // addToTempArray() {
-    //     Address.tempAddressArray.push(this);
-    //     console.log(Address.tempAddressArray);
-    //     debugger;
-    // }
 
     geocodeLoader() {
         var marker;
-        // console.log(this)
-        // debugger
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
         const addressId = this.id
         const address = this
@@ -38,7 +29,7 @@ class Address {
                     position: results[0].geometry.location
                 })
                 var infoWindow = new google.maps.InfoWindow({
-                    content: `<h3>Hello World</h3>`
+                    content: address.renderMarkerContent()
                 })
                 infoWindow.open(map, marker);
                 
@@ -46,6 +37,7 @@ class Address {
                 itemsFormDiv.style.display="none";
                 addressDiv.style.display="inline-block";
                 document.getElementById("address-items-form").remove();
+                createAddressForm.remove();
                 // marker.addEventListener("click", function(){
                 //     infoWindow.open(map, marker);
                 // })

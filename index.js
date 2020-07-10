@@ -119,8 +119,8 @@ const loadItemsForm = (address) => {
     cancelButton.setAttribute("id","cancel-items-button");
     cancelButton.innerHTML = "Cancel Items"
     cancelButton.addEventListener("click", function(e){
-        document.getElementById("create-address-form").style.display="inline-block"; 
-        document.getElementById("item-form").style.display="none"; 
+        createAddressForm.style.display="inline-block"; 
+        itemsFormDiv.style.display="none"; 
     })
 
     form.appendChild(info)
@@ -185,6 +185,8 @@ async function getAddressWithItems(e) {
            })
            const data = await fetchResponse.json();
            tempArray.push(data);
+           console.log(tempArray)
+           debugger
     }
        const newAddress = new Address(tempArray[tempArray.length - 1]);
        newAddress.geocodeLoader();     
@@ -192,9 +194,11 @@ async function getAddressWithItems(e) {
 
 function submitItems(e) {
     e.preventDefault(); 
+    console.log(e);
+    // debugger;
     getAddressWithItems(e); 
-    createAddressForm.reset(); 
-    document.getElementById("address-items-form").reset();     
+    // createAddressForm.reset(); 
+    // document.getElementById("address-items-form").reset();     
 }
 
 
