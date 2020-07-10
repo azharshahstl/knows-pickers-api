@@ -194,13 +194,13 @@ function submitItems(e) {
     getAddressWithItems(e);    
 }
 function attachContentToMarker(marker, content) {
-        var infowindow = new google.maps.InfoWindow({
-          content: content
-        });
-      
-        marker.addListener("click", function() {
-          infowindow.open(marker.get("map"), marker);
-        });
+    var infowindow = new google.maps.InfoWindow({
+        content: content
+    });
+    
+    marker.addListener("mouseover", function() {
+        infowindow.open(marker.get("map"), marker);
+    });
 }
 
 
