@@ -19,7 +19,11 @@ class Address {
             geocoder.geocode( { 'address': mapAddress}, function(results, status) {
                 if (status == 'OK') {
                     map.setCenter(results[0].geometry.location);
-                    makeMarker(results[0].geometry.location, address);
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    })
+                    attachContentToMarker(marker, address.renderMarkerContent());
                     itemsFormDiv.style.display="none";
                     addressDiv.style.display="inline-block";
                     document.getElementById("address-items-form").remove();

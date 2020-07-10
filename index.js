@@ -17,6 +17,7 @@ document.head.appendChild(script);
 
 var map;
 var geocoder;
+var marker;
 
 const stl = { lat: 38.6270, lng: -90.1994 }
 
@@ -192,18 +193,14 @@ function submitItems(e) {
     e.preventDefault(); 
     getAddressWithItems(e);    
 }
-function makeMarker(coords, address) {
-    const marker = new google.maps.Marker({
-        map: map,
-        position: coords
-    })
-    var infoWindow = new google.maps.InfoWindow({
-        content: address.renderMarkerContent()
-    })
-    infoWindow.open(map, marker);
-    
+function attachContentToMarker(marker, content) {
+        var infowindow = new google.maps.InfoWindow({
+          content: content
+        });
+      
+        marker.addListener("click", function() {
+          infowindow.open(marker.get("map"), marker);
+        });
 }
 
-// map.addEventListener(marker, "click", function(marker){
-//     infoWindow.open(map, marker);
-// })
+
