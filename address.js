@@ -15,32 +15,15 @@ class Address {
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
         const addressId = this.id
         const address = this
-        // console.log(address)
-        // debugger;
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode( { 'address': mapAddress}, function(results, status) {
-                // console.log(results)
-                // debugger
                 if (status == 'OK') {
-                    // debugger
-                map.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location
-                })
-                var infoWindow = new google.maps.InfoWindow({
-                    content: address.renderMarkerContent()
-                })
-                infoWindow.open(map, marker);
-                
-                // console.log(marker);
-                itemsFormDiv.style.display="none";
-                addressDiv.style.display="inline-block";
-                document.getElementById("address-items-form").remove();
-                createAddressForm.remove();
-                // marker.addEventListener("click", function(){
-                //     infoWindow.open(map, marker);
-                // })
+                    map.setCenter(results[0].geometry.location);
+                    makeMarker(results[0].geometry.location, address);
+                    itemsFormDiv.style.display="none";
+                    addressDiv.style.display="inline-block";
+                    document.getElementById("address-items-form").remove();
+                    createAddressForm.reset();
               } else {
                 alert('Unable to find that address for the following reason: ' + status);
                 fetch(`http://localhost:3000/addresses/${addressId}`, {
@@ -52,7 +35,6 @@ class Address {
                 })
               }
             });
-        // return Address.allAddresses 
     }
 
     renderMarkerContent() {
