@@ -2,11 +2,13 @@ BASE_URL = "http://localhost:3000"
 ADDRESS_URL = `${BASE_URL}/addresses`
 ITEMS_URL = `${BASE_URL}/items`
 
-const mainBody = document.querySelector("main")
-const address = document.getElementById("addressButton");
+const mainBody = document.querySelector("main");
+const addressDiv = document.getElementById("addressButton");
 const script = document.createElement('script');
 const cancelButton = document.getElementById("cancel-button");
-const addAddressButton = document.getElementById("add-button")
+const addAddressButton = document.getElementById("add-button");
+const createAddressForm = document.getElementById("create-address-form");
+const itemsFormDiv = document.getElementById("items-form");
 
 
 document.head.appendChild(script);
@@ -22,8 +24,8 @@ document.addEventListener("DOMContentLoaded",() => {
 
    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs&callback=initialMap`;
    script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs`; 
-   document.getElementById("item-form").style.display="none"; 
-   loadAddressButton();
+   itemsFormDiv.style.display="none"; 
+   loadAddressDiv();
 })
 
 window.initialMap = function() {
@@ -45,7 +47,7 @@ window.initialMap = function() {
 //     })
 // })
 
-const loadAddressButton = () => {
+const loadAddressDiv= () => {
     const h4 = document.createElement("h4");
     const button = document.createElement("button");
     
@@ -53,19 +55,19 @@ const loadAddressButton = () => {
     button.setAttribute("id", "create-address")
     button.innerHTML = "Create Address";
 
-    address.appendChild(h4);
-    address.appendChild(button);
+    addressDiv.appendChild(h4);
+    addressDiv.appendChild(button);
     
     button.addEventListener("click", function () {
-        document.getElementById("create-address-form").style.display="inline-block";
-        document.getElementById("addressButton").style.display="none";
+        createAddressForm.style.display="inline-block";
+        addressDiv.style.display="none";
     })
 }
 
 cancelButton.addEventListener("click", function (e) {
     e.preventDefault(); 
-    document.getElementById("create-address-form").style.display="none";
-    document.getElementById("addressButton").style.display="inline-block";
+    createAddressForm.style.display="none";
+    addressDiv.style.display="inline-block";
 })
 
 addAddressButton.addEventListener("click", function(e) {
@@ -81,21 +83,20 @@ addAddressButton.addEventListener("click", function(e) {
     .then(resp => resp.json())
     .then(json => {
         const newAddress = new Address(json);
-        loadItemsForm(newAddress);// newAddress.newAddressGeocodeLoader();
+        loadItemsForm(newAddress);
     }) 
 })
 
 const loadItemsForm = (address) => {
-    document.getElementById("create-address-form").style.display="none"; 
-    document.getElementById("item-form").style.display="inline-block"; 
-    var itemForm = document.getElementById("item-form");
-
+    createAddressForm.style.display="none"; 
+    itemsFormDiv.style.display="inline-block"; 
+    
     const form = document.createElement("form");
     const info = document.createElement("h3");
 
     info.innerHTML = `Items to be left for donation at: <i><p>${address.street_number} ${address.street_name}, ${address.zip_code}</p></i>`
     form.setAttribute("data-id", address.id)
-    form.setAttribute("id", "address-form");
+    form.setAttribute("id", "address-items-form");
     form.setAttribute("class", "form");
     form.setAttribute('method',"POST");
     form.setAttribute('action',"#");
@@ -127,7 +128,7 @@ const loadItemsForm = (address) => {
     form.appendChild(addAnotherItemButton)
     form.appendChild(submitItemsButton);
     form.appendChild(cancelButton);
-    itemForm.appendChild(form);
+    itemsFormDiv.appendChild(form);
 
 function addAnotherItem(e){
         e.preventDefault();
@@ -137,7 +138,7 @@ function addAnotherItem(e){
         itemInput.setAttribute('type',"text");
         itemInput.setAttribute('name',"name");
         form.insertBefore(itemInput, form.childNodes[1])
-        itemForm.appendChild(form);
+        itemsFormDiv.appendChild(form);
     }
 
     
@@ -192,7 +193,8 @@ async function getAddressWithItems(e) {
 function submitItems(e) {
     e.preventDefault(); 
     getAddressWithItems(e); 
-    document.getElementById("create-address-form").reset();      
+    createAddressForm.reset(); 
+    document.getElementById("address-items-form").reset();     
 }
 
 

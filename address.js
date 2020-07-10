@@ -41,9 +41,11 @@ class Address {
                     content: `<h3>Hello World</h3>`
                 })
                 infoWindow.open(map, marker);
+                
                 // console.log(marker);
-                document.getElementById("item-form").style.display="none";
-                document.getElementById("addressButton").style.display="inline-block";
+                itemsFormDiv.style.display="none";
+                addressDiv.style.display="inline-block";
+                document.getElementById("address-items-form").remove();
                 // marker.addEventListener("click", function(){
                 //     infoWindow.open(map, marker);
                 // })
