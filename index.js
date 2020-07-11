@@ -84,7 +84,7 @@ addAddressButton.addEventListener("click", function(e) {
     .then(resp => resp.json())
     .then(json => {
         const newAddress = new Address(json);
-        loadItemsForm(newAddress);
+        newAddress.checkAddress();
     }) 
 })
 
@@ -119,10 +119,14 @@ const loadItemsForm = (address) => {
     const cancelButton = document.createElement("button"); 
     cancelButton.setAttribute("id","cancel-items-button");
     cancelButton.innerHTML = "Cancel Items"
-    cancelButton.addEventListener("click", function(e){
-        createAddressForm.style.display="inline-block"; 
-        itemsFormDiv.style.display="none"; 
-    })
+    cancelButton.addEventListener("click", cancelAddress)
+    // {
+        // console.log(e);
+        // debugger;
+        // createAddressForm.style.display="inline-block"; 
+    //     ;
+    //     itemsFormDiv.style.display="none"; 
+    // })
 
     form.appendChild(info)
     form.appendChild(itemInput);
@@ -130,6 +134,14 @@ const loadItemsForm = (address) => {
     form.appendChild(submitItemsButton);
     form.appendChild(cancelButton);
     itemsFormDiv.appendChild(form);
+
+function cancelAddress(e){
+    e.preventDefault();
+    createAddressForm.style.display="inline-block"; 
+    itemsFormDiv.style.display="none"; 
+    document.getElementById("address-items-form").reset();
+    createAddressForm.reset();
+}
 
 function addAnotherItem(e){
         e.preventDefault();

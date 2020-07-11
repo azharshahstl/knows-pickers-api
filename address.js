@@ -41,8 +41,34 @@ class Address {
             });
     }
 
+    checkAddress() {
+        var marker;
+        const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
+        const addressId = this.id
+        const address = this
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode( { 'address': mapAddress}, function(results, status) {
+                if (status == 'OK') {
+                    loadItemsForm(address);      
+              } else {
+                alert('Unable to find that address for the following reason: ' + status);
+                fetch(`http://localhost:3000/addresses/${addressId}`, {
+                    method: "DELETE", 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Accept": "application/json",
+                      }
+                })
+              }
+            });
+
+    }
+
     renderMarkerContent() {
-        return `Hello World`
+        for (let item of this.items){
+            return `${item.name}`
+        }
+        // return `<h3 id="data-set">${this.street_number} ${this.street_name}</h3>`
     }
     
 }
