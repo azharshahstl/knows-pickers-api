@@ -6,11 +6,16 @@ class Address {
         this.street_name = addressDataObject.street_name
         this.zip_code = addressDataObject.zip_code
         this.items = addressDataObject.items
-        Address.allAddresses.push(this)
+        
         
     }
 
+    static findAddress(id) {
+        return this.allAddresses.find((address) => address.id == id)
+      }
+
     geocodeLoader() {
+        Address.allAddresses.push(this)
         var marker;
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
         const addressId = this.id

@@ -198,14 +198,23 @@ function submitItems(e) {
     e.preventDefault(); 
     getAddressWithItems(e);    
 }
+
 function attachContentToMarker(marker, content) {
     var infowindow = new google.maps.InfoWindow({
         content: content
     });
-    
     marker.addListener("mouseover", function() {
         infowindow.open(marker.get("map"), marker);
     });
+    marker.addListener("click", function() {
+        console.log(infowindow) 
+        // debugger
+        const foundAddress = Address.findAddress(infowindow.content.split(">")[0].split("=")[1]);
+        console.log(foundAddress)
+        ;
+    } )
 }
+
+
 
 
