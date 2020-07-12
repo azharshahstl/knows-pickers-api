@@ -41,6 +41,14 @@ class Address {
             });
     }
 
+    iterateItems(){
+        var listedItems = ''
+        for(let item of this.items){
+           listedItems += `<li>${item.name}</li>`
+        }
+        return listedItems
+    } 
+
     checkAddress() {
         var marker;
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
@@ -64,11 +72,12 @@ class Address {
 
     }
 
-    renderMarkerContent() {
-        for (let item of this.items){
-            return `${item.name}`
-        }
-        // return `<h3 id="data-set">${this.street_number} ${this.street_name}</h3>`
+    renderMarkerContent() {  
+        let content = `<h3 data-set=${this.id}>${this.street_number} ${this.street_name}</h3>` + 
+        "<ul>" +
+        `${this.iterateItems()}` +
+        "</ul>"
+        return content
     }
     
 }

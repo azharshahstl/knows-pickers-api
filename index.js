@@ -120,13 +120,6 @@ const loadItemsForm = (address) => {
     cancelButton.setAttribute("id","cancel-items-button");
     cancelButton.innerHTML = "Cancel Items"
     cancelButton.addEventListener("click", cancelAddress)
-    // {
-        // console.log(e);
-        // debugger;
-        // createAddressForm.style.display="inline-block"; 
-    //     ;
-    //     itemsFormDiv.style.display="none"; 
-    // })
 
     form.appendChild(info)
     form.appendChild(itemInput);
