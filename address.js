@@ -15,7 +15,11 @@ class Address {
       }
 
     geocodeLoader() {
+        console.log(this)
+        debugger;
         Address.allAddresses.push(this)
+        console.log(Address.allAddresses)
+        debugger
         var marker;
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
         const addressId = this.id
@@ -86,16 +90,20 @@ class Address {
     }
 
     editItemsOnAddress() {
+        // console.log(this)
+        // debugger
         addressDiv.style.display="none"; 
         const editItemsDiv =document.getElementById("edit-items");
         editItemsDiv.style.display="inline-block"
 
+        const h4 = document.createElement("h4");
+        h4.innerHTML = `Editing items for the following address:
+        ${this.street_number} ${this.street_name}`
+
         const editItemsForm = document.createElement("form");
         editItemsForm.setAttribute("data-set", this.id);
-        const editItemsUl = document.createElement("ul");
 
         for(const item of this.items){
-            const editItemsLi = document.createElement("li");
 
             const editItemInput = document.createElement("input");
             editItemInput.setAttribute("type", "text");
@@ -103,9 +111,12 @@ class Address {
             editItemInput.setAttribute("value", item.name);
 
             const editItemsButton = document.createElement("button");
-            editItemsButton.setAttribute("data-set", item.id);
+            editItemsButton.setAttribute("data-item", item.id);
+            editItemsButton.setAttribute("data-address", this.id)
             editItemsButton.setAttribute("id", "delete-item")
+            editItemsButton.setAttribute("value", "submit")
             editItemsButton.innerHTML = "Delete Item"
+            editItemsButton.addEventListener("click", this.deleteItemAndUpdateMarkerAndForm)
 
             editItemsForm.appendChild(editItemInput);
             editItemsForm.appendChild(editItemsButton);
@@ -127,10 +138,38 @@ class Address {
         editItemsForm.appendChild(updateItems);
 
 
+        editItemsDiv.appendChild(h4)
         editItemsDiv.appendChild(editItemsForm);
         
-    }       
+    } 
+    
+    deleteItemAndUpdateMarkerAndForm(e) {
+        e.preventDefault()
+        console.log(Address.allAddresses)
+        debugger;
+        Address.allAddresses = Address.allAddresses.filter(address => address.id != parseInt(this.dataset.address)) //Deleting current address from Address array 
+        console.log(Address.allAddresses)
+        debugger;
+        fetch(`${ITEMS_URL}/${this.dataset.item}`, {
+                    method: "DELETE", 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Accept": "application/json",
+                      }
+        })
+        .then(fetch(`${ADDRESS_URL}/${this.dataset.address}`)
+        .then(response => response.json())
+        .then(addressData => {
+            
+                const updatedItemsOnAddress = new Address(addressData); //Creating new address with updated items list
+                
+                Address.allAddresses.push(updatedItemsOnAddress); 
+                console.log(Address.allAddresses)
+                debugger;
+                updatedItemsOnAddress.renderMarkerContent();
+                updatedItemsOnAddress.editItemsOnAddress();
+            }))
+    }
     
 }
-// Address.tempAddressArray = [];
 Address.allAddresses = []

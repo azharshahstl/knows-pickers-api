@@ -6,7 +6,7 @@ class AddressesController < ApplicationController
     end 
 
     def show 
-        address = Address.find_by(params[:id])
+        address = Address.find(params[:id])
         render json: address 
     end 
 
