@@ -12,6 +12,7 @@ html, body {
 
 #title {
     text-align: center;
+    list-style-position: inside;
     background-color: peachpuff;
 }
 
@@ -41,7 +42,7 @@ div#addressButton {
     background-color: antiquewhite;
 }
 
-#items-form {
+#items-form, #edit-items {
     border: 3px solid #73AD21;
     padding: 4px;
     width: 26%;
@@ -51,7 +52,7 @@ div#addressButton {
     height: 50%
 }
 
-#add-items-button {
+#add-items-button, #update-items {
     position: absolute;
     float: right;
     width: 28%; 
@@ -60,7 +61,7 @@ div#addressButton {
 
 }
 
-#add-another-button {
+#add-another-button, #delete-marker-and-items {
     position: absolute;
     float: right;
     width: 28%; 
@@ -74,4 +75,8 @@ div#addressButton {
     width: 28%; 
     bottom: 0%;
     left: 35%;
+}
+
+#delete-item {
+    right: 0%;
 }

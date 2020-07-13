@@ -88,6 +88,8 @@ class Address {
     editItemsOnAddress() {
         addressDiv.style.display="none"; 
         const editItemsDiv =document.getElementById("edit-items");
+        editItemsDiv.style.display="inline-block"
+
         const editItemsForm = document.createElement("form");
         editItemsForm.setAttribute("data-set", this.id);
         const editItemsUl = document.createElement("ul");
@@ -101,13 +103,12 @@ class Address {
             editItemInput.setAttribute("value", item.name);
 
             const editItemsButton = document.createElement("button");
-            editItemsButton.setAttribute("value", "Delete Item");
             editItemsButton.setAttribute("data-set", item.id);
+            editItemsButton.setAttribute("id", "delete-item")
+            editItemsButton.innerHTML = "Delete Item"
 
             editItemsForm.appendChild(editItemInput);
             editItemsForm.appendChild(editItemsButton);
-
-           
         }
 
         const deletMarkerAndItems = document.createElement("button");

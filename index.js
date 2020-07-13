@@ -9,6 +9,7 @@ const cancelButton = document.getElementById("cancel-button");
 const addAddressButton = document.getElementById("add-button");
 const createAddressForm = document.getElementById("create-address-form");
 const itemsFormDiv = document.getElementById("items-form");
+const editItemsDiv = document.getElementById("edit-items")
 
 
 document.head.appendChild(script);
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded",() => {
    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs&callback=initialMap`;
    script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs`; 
    itemsFormDiv.style.display="none"; 
+   editItemsDiv.style.display="none"; 
    loadAddressDiv();
 })
 
