@@ -46,7 +46,7 @@ class Address {
             });
     }
 
-    iterateItems(){
+    iterateOverItems(){
         var listedItems = ''
         for(let item of this.items){
            listedItems += `<li>${item.name}</li>`
@@ -80,11 +80,56 @@ class Address {
     renderMarkerContent() {  
         let content = `<h3 data-set=${this.id}>${this.street_number} ${this.street_name}</h3>` + 
         "<ul>" +
-        `${this.iterateItems()}` +
+        `${this.iterateOverItems()}` +
         "</ul>"
         return content
     }
+
+    editItemsOnAddress() {
+        addressDiv.style.display="none"; 
+        const editItemsDiv =document.getElementById("edit-items");
+        const editItemsForm = document.createElement("form");
+        editItemsForm.setAttribute("data-set", this.id);
+        const editItemsUl = document.createElement("ul");
+
+        for(const item of this.items){
+            const editItemsLi = document.createElement("li");
+
+            const editItemInput = document.createElement("input");
+            editItemInput.setAttribute("type", "text");
+            editItemInput.setAttribute("name", "name");
+            editItemInput.setAttribute("value", item.name);
+
+            const editItemsButton = document.createElement("button");
+            editItemsButton.setAttribute("value", "Delete Item");
+            editItemsButton.setAttribute("data-set", item.id);
+
+            editItemsForm.appendChild(editItemInput);
+            editItemsForm.appendChild(editItemsButton);
+
+           
+        }
+
+        const deletMarkerAndItems = document.createElement("button");
+        deletMarkerAndItems.setAttribute("id", "delete-marker-and-items");
+        deletMarkerAndItems.innerHTML = "Delete Marker and Items"
+        deletMarkerAndItems.addEventListener("click", console.log("Hello"))
+
+        editItemsForm.appendChild(deletMarkerAndItems);
+    
+
+        const updateItems = document.createElement("button");
+        updateItems.setAttribute("id", "update-items");
+        updateItems.innerHTML = "Update Items"
+        updateItems.addEventListener("click", console.log("Hello2"))
+
+        editItemsForm.appendChild(updateItems);
+
+
+        editItemsDiv.appendChild(editItemsForm);
+        
+    }       
     
 }
-Address.tempAddressArray = [];
+// Address.tempAddressArray = [];
 Address.allAddresses = []

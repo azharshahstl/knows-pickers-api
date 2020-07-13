@@ -7,10 +7,4 @@ class Item {
         Item.allItems.push(this);
     }
 
-    addItemToMarker() {
-
-    }
-
-
-
 } Item.allItems = []

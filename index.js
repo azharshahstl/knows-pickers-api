@@ -44,7 +44,7 @@ window.initialMap = function() {
 // .then(addressData => {
 //     addressData.forEach( (address) => {
 //         const seedObject = new Address(address);
-//         seedObject.geocodeLoader();
+//         seedObject.checkAddress();
 //     })
 // })
 
@@ -209,8 +209,8 @@ function attachContentToMarker(marker, content) {
     marker.addListener("click", function() {
         console.log(infowindow) 
         // debugger
-        const foundAddress = Address.findAddress(infowindow.content.split(">")[0].split("=")[1]);
-        console.log(foundAddress)
+        const pulledAddress = Address.findAddress(infowindow.content.split(">")[0].split("=")[1]);
+        pulledAddress.editItemsOnAddress();
         ;
     } )
 }
