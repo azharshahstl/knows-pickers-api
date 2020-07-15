@@ -5,9 +5,7 @@ class Address {
         this.street_number = addressDataObject.street_number
         this.street_name = addressDataObject.street_name
         this.zip_code = addressDataObject.zip_code
-        this.items = addressDataObject.items
-        
-        
+        this.items = addressDataObject.items    
     }
 
     static findAddress(id) {
@@ -15,23 +13,20 @@ class Address {
       }
 
     geocodeLoader() {
-        console.log(this)
-        debugger;
-        Address.allAddresses.push(this)
-        console.log(Address.allAddresses)
-        debugger
-        var marker;
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
-        const addressId = this.id
         const address = this
+        const addressId = this.id
+        
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode( { 'address': mapAddress}, function(results, status) {
                 if (status == 'OK') {
                     map.setCenter(results[0].geometry.location);
-                    marker = new google.maps.Marker({
+                    const marker = new google.maps.Marker({
                         map: map,
                         position: results[0].geometry.location
                     })
+                    address.marker = marker;
+                    Address.allAddresses.push(address)
                     attachContentToMarker(marker, address.renderMarkerContent());
                     itemsFormDiv.style.display="none";
                     addressDiv.style.display="inline-block";
@@ -55,11 +50,13 @@ class Address {
         for(let item of this.items){
            listedItems += `<li>${item.name}</li>`
         }
+        console.log(listedItems)
+        // debugger;
         return listedItems
     } 
 
     checkAddress() {
-        var marker;
+        // var marker;
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
         const addressId = this.id
         const address = this
@@ -82,29 +79,36 @@ class Address {
     }
 
     renderMarkerContent() {  
+        console.log(this);
+        // debugger;
         let content = `<h3 data-set=${this.id}>${this.street_number} ${this.street_name}</h3>` + 
         "<ul>" +
         `${this.iterateOverItems()}` +
         "</ul>"
+        console.log(content);
+        // debugger;
         return content
     }
 
     editItemsOnAddress() {
-        // console.log(this)
-        // debugger
+        console.log(this);
         addressDiv.style.display="none"; 
-        const editItemsDiv =document.getElementById("edit-items");
+        const editItemsDiv = document.getElementById("edit-items");
         editItemsDiv.style.display="inline-block"
+       
+        const editItemsForm = document.createElement("form");
+        editItemsForm.setAttribute("data-set", this.id);
+        editItemsForm.setAttribute("id", "edit-items-form")
 
         const h4 = document.createElement("h4");
         h4.innerHTML = `Editing items for the following address:
         ${this.street_number} ${this.street_name}`
 
-        const editItemsForm = document.createElement("form");
-        editItemsForm.setAttribute("data-set", this.id);
-
+        const ul = document.createElement("ul");
+        
         for(const item of this.items){
 
+            const li = document.createElement("li")
             const editItemInput = document.createElement("input");
             editItemInput.setAttribute("type", "text");
             editItemInput.setAttribute("name", "name");
@@ -116,60 +120,76 @@ class Address {
             editItemsButton.setAttribute("id", "delete-item")
             editItemsButton.setAttribute("value", "submit")
             editItemsButton.innerHTML = "Delete Item"
-            editItemsButton.addEventListener("click", this.deleteItemAndUpdateMarkerAndForm)
+            editItemsButton.addEventListener("click", this.deleteItem)
 
-            editItemsForm.appendChild(editItemInput);
-            editItemsForm.appendChild(editItemsButton);
+            li.appendChild(editItemInput);
+            li.appendChild(editItemsButton);
+
+            ul.appendChild(li);
+            
         }
-
         const deletMarkerAndItems = document.createElement("button");
         deletMarkerAndItems.setAttribute("id", "delete-marker-and-items");
         deletMarkerAndItems.innerHTML = "Delete Marker and Items"
-        deletMarkerAndItems.addEventListener("click", console.log("Hello"))
+        // deletMarkerAndItems.addEventListener("click", console.log("Hello"))
 
-        editItemsForm.appendChild(deletMarkerAndItems);
+       
     
-
         const updateItems = document.createElement("button");
+        updateItems.setAttribute("data-address", this.id)
         updateItems.setAttribute("id", "update-items");
+        updateItems.setAttribute("value", "submit")
         updateItems.innerHTML = "Update Items"
-        updateItems.addEventListener("click", console.log("Hello2"))
+        updateItems.addEventListener("click", this.updateItemsOnAddress)
 
+        editItemsForm.appendChild(h4)
+        editItemsForm.appendChild(ul);
         editItemsForm.appendChild(updateItems);
-
-
-        editItemsDiv.appendChild(h4)
+        editItemsForm.appendChild(deletMarkerAndItems);
         editItemsDiv.appendChild(editItemsForm);
-        
     } 
     
-    deleteItemAndUpdateMarkerAndForm(e) {
+    deleteItem(e) {
         e.preventDefault()
-        console.log(Address.allAddresses)
-        debugger;
-        Address.allAddresses = Address.allAddresses.filter(address => address.id != parseInt(this.dataset.address)) //Deleting current address from Address array 
-        console.log(Address.allAddresses)
-        debugger;
         fetch(`${ITEMS_URL}/${this.dataset.item}`, {
-                    method: "DELETE", 
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Accept": "application/json",
-                      }
+            method: "DELETE", 
+            headers: {
+                'Content-Type': 'application/json',
+                "Accept": "application/json",
+                }
         })
-        .then(fetch(`${ADDRESS_URL}/${this.dataset.address}`)
+        e.target.parentElement.remove();
+    } 
+
+    updateItemsOnAddress(e) {
+        e.preventDefault();
+        const foundAddress = Address.findAddress(this.dataset.address);
+        const foundAddressMarker = foundAddress.marker; //Grabbing marker from address (which has infowindow as a key)
+        Address.allAddresses = Address.allAddresses.filter(address => address.id != this.dataset.address) //Deleting current address from Address array 
+
+        fetch(`${ADDRESS_URL}/${this.dataset.address}`)
         .then(response => response.json())
         .then(addressData => {
-            
                 const updatedItemsOnAddress = new Address(addressData); //Creating new address with updated items list
-                
-                Address.allAddresses.push(updatedItemsOnAddress); 
-                console.log(Address.allAddresses)
-                debugger;
-                updatedItemsOnAddress.renderMarkerContent();
-                updatedItemsOnAddress.editItemsOnAddress();
-            }))
+                updatedItemsOnAddress.marker = foundAddressMarker //Attaching marker from previous version of this address to new one
+                Address.allAddresses.push(updatedItemsOnAddress);
+                document.getElementById("edit-items-form").remove();
+                editItemsDiv.style.display ="none";
+                addressDiv.style.display="inline-block";
+                const updatedContent = updatedItemsOnAddress.renderMarkerContent();
+                attachUpdatedContentToMarker(updatedItemsOnAddress.marker, updatedContent)
+            })
+        // fetch(`${ADDRESS_URL}/${this.dataset.address}`, {
+        //                     method: "PATCH", 
+        //                     headers: {
+        //                         'Content-Type': 'application/json',
+        //                         "Accept": "application/json",
+        //                       },
+        //                     body: JSON.stringify({id: = this.dataset.address}) 
+        //         })    
+        //         .then(response => response.json())
+        //         .then(addressData => {
+        //         })
     }
-    
 }
 Address.allAddresses = []

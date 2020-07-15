@@ -11,14 +11,16 @@ const createAddressForm = document.getElementById("create-address-form");
 const itemsFormDiv = document.getElementById("items-form");
 const editItemsDiv = document.getElementById("edit-items")
 
+// const editItemsForm = document.createElement("form");
+
 
 document.head.appendChild(script);
 
 
 
-var map;
-var geocoder;
-var marker;
+// var map;
+// var geocoder;
+// var marker;
 
 const stl = { lat: 38.6270, lng: -90.1994 }
 
@@ -202,18 +204,36 @@ function submitItems(e) {
 }
 
 function attachContentToMarker(marker, content) {
-    var infowindow = new google.maps.InfoWindow({
+    const infowindow = new google.maps.InfoWindow({
         content: content
     });
     marker.addListener("mouseover", function() {
-        infowindow.open(marker.get("map"), marker);
+        infowindow.open(marker.get("map"), marker)    
     });
+    marker.addListener("mouseout", function() {
+        infowindow.close(marker.get("map"), marker)    
+    });
+
     marker.addListener("click", function() {
+        // infowindow.close(marker.get("map"), marker)
         const pulledAddress = Address.findAddress(infowindow.content.split(">")[0].split("=")[1]);
+        pulledAddress.marker.infowindow = infowindow
+        console.log(pulledAddress);
+        debugger;
         pulledAddress.editItemsOnAddress();
         ;
     } )
 }
+
+function attachUpdatedContentToMarker(marker, updatedContent) {
+    const newInfowindow = marker.infowindow;
+    newInfowindow.setContent(updatedContent);
+    newInfowindow.open(marker.get("map"), marker)
+}
+
+
+
+
 
 
 
