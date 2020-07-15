@@ -50,8 +50,6 @@ class Address {
         for(let item of this.items){
            listedItems += `<li>${item.name}</li>`
         }
-        console.log(listedItems)
-        // debugger;
         return listedItems
     } 
 
@@ -79,19 +77,14 @@ class Address {
     }
 
     renderMarkerContent() {  
-        console.log(this);
-        // debugger;
         let content = `<h3 data-set=${this.id}>${this.street_number} ${this.street_name}</h3>` + 
         "<ul>" +
         `${this.iterateOverItems()}` +
         "</ul>"
-        console.log(content);
-        // debugger;
         return content
     }
 
     editItemsOnAddress() {
-        console.log(this);
         addressDiv.style.display="none"; 
         const editItemsDiv = document.getElementById("edit-items");
         editItemsDiv.style.display="inline-block"

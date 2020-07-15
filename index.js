@@ -215,11 +215,8 @@ function attachContentToMarker(marker, content) {
     });
 
     marker.addListener("click", function() {
-        // infowindow.close(marker.get("map"), marker)
         const pulledAddress = Address.findAddress(infowindow.content.split(">")[0].split("=")[1]);
         pulledAddress.marker.infowindow = infowindow
-        console.log(pulledAddress);
-        debugger;
         pulledAddress.editItemsOnAddress();
         ;
     } )
