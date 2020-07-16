@@ -157,7 +157,7 @@ class Address {
     deleteMarkerandItems(e) {
         e.preventDefault();
         console.log(e);
-        fetch(`http://localhost:3000/addresses/${e.target.dataset.deletemarker}`, {
+        fetch(`${ADDRESS_URL}/${e.target.dataset.deletemarker}`, {
                     method: "DELETE", 
                     headers: {
                         'Content-Type': 'application/json',
