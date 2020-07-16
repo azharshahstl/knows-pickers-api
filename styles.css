@@ -69,7 +69,7 @@ div#addressButton {
     left: 0%
 }
 
-#cancel-items-button {
+#cancel-items-button, #close-items-window{
     position: absolute;
     float: right;
     width: 28%; 

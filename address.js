@@ -126,6 +126,12 @@ class Address {
         deletMarkerAndItems.innerHTML = "Delete Marker and Items"
         deletMarkerAndItems.addEventListener("click", this.deleteMarkerandItems)
 
+        const closeEditFormWindow = document.createElement("button");
+        closeEditFormWindow.setAttribute("data-closewindow", this.id)
+        closeEditFormWindow.setAttribute("id", "close-items-window");
+        closeEditFormWindow.innerHTML = "Close this Window"
+        closeEditFormWindow.addEventListener("click", this.closeFormWindow)
+
        
     
         const updateItems = document.createElement("button");
@@ -138,9 +144,16 @@ class Address {
         editItemsForm.appendChild(h4)
         editItemsForm.appendChild(ul);
         editItemsForm.appendChild(updateItems);
+        editItemsForm.appendChild(closeEditFormWindow)
         editItemsForm.appendChild(deletMarkerAndItems);
         editItemsDiv.appendChild(editItemsForm);
     } 
+
+    closeFormWindow() {
+        document.getElementById("edit-items-form").remove();
+        editItemsDiv.style.display ="none";
+        addressDiv.style.display="inline-block";
+    }
     
     deleteItem(e) {
         e.preventDefault()

@@ -130,8 +130,7 @@ function cancelAddress(e){
     e.preventDefault();
     createAddressForm.style.display="inline-block"; 
     itemsFormDiv.style.display="none"; 
-    document.getElementById("address-items-form").reset();
-    createAddressForm.reset();
+    document.getElementById("address-items-form").remove();
 }
 
 function addAnotherItem(e){
@@ -141,7 +140,7 @@ function addAnotherItem(e){
         const itemInput = document.createElement("input");
         itemInput.setAttribute('type',"text");
         itemInput.setAttribute('name',"name");
-        form.insertBefore(itemInput, form.childNodes[1])
+        form.insertBefore(itemInput, form.childNodes[2])
         itemsFormDiv.appendChild(form);
     }
 
