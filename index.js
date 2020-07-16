@@ -16,12 +16,6 @@ const editItemsDiv = document.getElementById("edit-items")
 
 document.head.appendChild(script);
 
-
-
-// var map;
-// var geocoder;
-// var marker;
-
 const stl = { lat: 38.6270, lng: -90.1994 }
 
 document.addEventListener("DOMContentLoaded",() => {

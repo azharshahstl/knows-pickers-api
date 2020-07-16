@@ -15,13 +15,9 @@ class AddressesController < ApplicationController
         render json: address
     end 
 
-    def update
-        address = Address.find(params[:id]) 
-        binding.pry
-    end
-
     def destroy 
         address = Address.find(params[:id])
+        # binding.pry
         address.destroy 
     end
 

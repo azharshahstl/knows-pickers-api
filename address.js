@@ -54,7 +54,6 @@ class Address {
     } 
 
     checkAddress() {
-        // var marker;
         const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
         const addressId = this.id
         const address = this
@@ -122,9 +121,10 @@ class Address {
             
         }
         const deletMarkerAndItems = document.createElement("button");
+        deletMarkerAndItems.setAttribute("data-deleteMarker", this.id)
         deletMarkerAndItems.setAttribute("id", "delete-marker-and-items");
         deletMarkerAndItems.innerHTML = "Delete Marker and Items"
-        // deletMarkerAndItems.addEventListener("click", console.log("Hello"))
+        deletMarkerAndItems.addEventListener("click", this.deleteMarkerandItems)
 
        
     
@@ -149,10 +149,31 @@ class Address {
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/json",
-                }
+            }
         })
         e.target.parentElement.remove();
     } 
+
+    deleteMarkerandItems(e) {
+        e.preventDefault();
+        console.log(e);
+        fetch(`http://localhost:3000/addresses/${e.target.dataset.deletemarker}`, {
+                    method: "DELETE", 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Accept": "application/json",
+                    }
+        })
+        const address = Address.findAddress(e.target.dataset.deletemarker)
+        address.marker.setMap(null);
+        Address.allAddresses = Address.allAddresses.filter(address => address.id != e.target.dataset.deletemarker)
+        console.log(address);
+        console.log(Address.allAddresses);
+        document.getElementById("edit-items-form").remove();
+        editItemsDiv.style.display ="none";
+        addressDiv.style.display="inline-block";
+        debugger;
+    }
 
     updateItemsOnAddress(e) {
         e.preventDefault();
