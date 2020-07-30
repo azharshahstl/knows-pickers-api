@@ -80,3 +80,13 @@ div#addressButton {
 #delete-item {
     right: 0%;
 }
+
+#alpha-items{
+    border: 3px solid #73AD21;
+    display: none;
+    padding: 4px;
+    width: 26%;
+    position: absolute;
+    top: 40%;
+    right: 20px;
+}

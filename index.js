@@ -10,9 +10,7 @@ const addAddressButton = document.getElementById("add-button");
 const createAddressForm = document.getElementById("create-address-form");
 const itemsFormDiv = document.getElementById("items-form");
 const editItemsDiv = document.getElementById("edit-items")
-
-// const editItemsForm = document.createElement("form");
-
+const alphaItemsDiv = document.getElementById("alpha-items")
 
 document.head.appendChild(script);
 
@@ -24,7 +22,19 @@ document.addEventListener("DOMContentLoaded",() => {
    script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs`; 
    itemsFormDiv.style.display="none"; 
    editItemsDiv.style.display="none"; 
+
+   fetch(ADDRESS_URL)
+    .then(response => response.json())
+    .then(addressesData => {  console.log(addressesData)
+        // addressesData.forEach( (address) => {
+        //     const addressObject = new Address(address);
+        //     addressObject.geocodeLoader()
+        // })
+        
+    })
+
    loadAddressDiv();
+//    console.log(Address.allAddresses)
 })
 
 window.initialMap = function() {
@@ -60,7 +70,27 @@ const loadAddressDiv= () => {
     button.addEventListener("click", function () {
         createAddressForm.style.display="inline-block";
         addressDiv.style.display="none";
+        alphaItemsDiv.style.display="none";
     })
+}
+
+function sortItemsAlphabetically(array) {
+    const getItemsObjectsFromAdresses = array.map(address => address.items);
+    const flattenItemsArray = getItemsObjectsFromAdresses.flat();
+    const itemNames = flattenItemsArray.map(item => item.name)
+    const alphabatizedItems = itemNames.sort();
+   
+
+    alphaItemsDiv.style.display="inline-block";
+    const ulitems = document.getElementById("ul-items")
+    ulitems.innerHTML = '';
+    for (const itemName of alphabatizedItems) {
+        const itemLi = document.createElement("li"); 
+        itemLi.innerHTML = `${itemName}`;
+        ulitems.appendChild(itemLi);
+    }   
+    alphaItemsDiv.appendChild(ul); 
+          
 }
 
 cancelButton.addEventListener("click", function (e) {
@@ -93,7 +123,7 @@ const loadItemsForm = (address) => {
     const form = document.createElement("form");
     const info = document.createElement("h3");
 
-    info.innerHTML = `Items to be left for donation at: <i><p>${address.street_number} ${address.street_name}, ${address.zip_code}</p></i>`
+    info.innerHTML = `Items to be left for donation at: <i><p>${address.streetNumber} ${address.streetName}, ${address.zipCode}</p></i>`
     form.setAttribute("data-id", address.id)
     form.setAttribute("id", "address-items-form");
     form.setAttribute("class", "form");
@@ -148,33 +178,11 @@ function addAnotherItem(e){
 
 }
 
-// function submitItems(e){
-//     e.preventDefault(); 
-//     const array = e.target.form.elements
-//         for (let index = 0; index < array.length-3; index++){
-            // fetch(ITEMS_URL, {
-            //     method: 'POST', 
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         "Accept": "application/json"
-            //     },
-            //     body: JSON.stringify({address_id: e.target.form.dataset.id, name: array[index].value })
-            // })
-//             .then(response => response.json())
-//             .then(json => {
-//                 // const addressObject = new Address(json)
-//                 // console.log(Address.allAddresses)             
-//             })
-            
-            
-//         } 
-        
-// }
-
 async function getAddressWithItems(e) {
     const tempArray = [];
     const array = e.target.form.elements
-    for (let index = 0; index < array.length-3; index++){
+    const modifiedArrayLength = array.length - 3
+    for (let index = 0; index < modifiedArrayLength; index++){
        
            const fetchResponse = await fetch(ITEMS_URL, {
                method: 'POST', 

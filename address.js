@@ -2,18 +2,24 @@ class Address {
 
     constructor(addressDataObject) {
         this.id = addressDataObject.id
-        this.street_number = addressDataObject.street_number
-        this.street_name = addressDataObject.street_name
-        this.zip_code = addressDataObject.zip_code
-        this.items = addressDataObject.items    
+        this.streetNumber = addressDataObject.street_number
+        this.streetName = addressDataObject.street_name
+        // this.streetName = this.capitalize(addressDataObject.street_name)
+        this.zipCode = addressDataObject.zip_code
+        this.items = addressDataObject.items   
+        
     }
+
+    // capitalize(string) {
+    //     return string.charAt(0).toUppercase + string.slice(1);
+    // }
 
     static findAddress(id) {
         return this.allAddresses.find((address) => address.id == id)
       }
 
     geocodeLoader() {
-        const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
+        const mapAddress = `${this.streetNumber} + ${this.streetName}  + ${this.zipCode}`;
         const address = this
         const addressId = this.id
         
@@ -26,12 +32,13 @@ class Address {
                         position: results[0].geometry.location
                     })
                     address.marker = marker;
-                    Address.allAddresses.push(address)
+                    addressesArray.push(address)
                     attachContentToMarker(marker, address.renderMarkerContent());
                     itemsFormDiv.style.display="none";
                     addressDiv.style.display="inline-block";
                     document.getElementById("address-items-form").remove();
                     createAddressForm.reset();
+                    sortItemsAlphabetically(addressesArray)
               } else {
                 alert('Unable to find that address for the following reason: ' + status);
                 fetch(`http://localhost:3000/addresses/${addressId}`, {
@@ -54,7 +61,7 @@ class Address {
     } 
 
     checkAddress() {
-        const mapAddress = `${this.street_number} + ${this.street_name}  + ${this.zip_code}`;
+        const mapAddress = `${this.streetNumber} + ${this.streetName}  + ${this.zipCode}`;
         const addressId = this.id
         const address = this
             const geocoder = new google.maps.Geocoder();
@@ -76,7 +83,7 @@ class Address {
     }
 
     renderMarkerContent() {  
-        let content = `<h3 data-set=${this.id}>${this.street_number} ${this.street_name}</h3>` + 
+        let content = `<h3 data-set=${this.id}>${this.streetNumber} ${this.streetName}</h3>` + 
         "<ul>" +
         `${this.iterateOverItems()}` +
         "</ul>"
@@ -94,7 +101,7 @@ class Address {
 
         const h4 = document.createElement("h4");
         h4.innerHTML = `Editing items for the following address:
-        ${this.street_number} ${this.street_name}`
+        ${this.streetNumber} ${this.streetName}`
 
         const ul = document.createElement("ul");
         
@@ -206,17 +213,6 @@ class Address {
                 const updatedContent = updatedItemsOnAddress.renderMarkerContent();
                 attachUpdatedContentToMarker(updatedItemsOnAddress.marker, updatedContent)
             })
-        // fetch(`${ADDRESS_URL}/${this.dataset.address}`, {
-        //                     method: "PATCH", 
-        //                     headers: {
-        //                         'Content-Type': 'application/json',
-        //                         "Accept": "application/json",
-        //                       },
-        //                     body: JSON.stringify({id: = this.dataset.address}) 
-        //         })    
-        //         .then(response => response.json())
-        //         .then(addressData => {
-        //         })
     }
 }
-Address.allAddresses = []
+const addressesArray = Address.allAddresses = []
