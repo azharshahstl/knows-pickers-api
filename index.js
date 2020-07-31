@@ -89,7 +89,7 @@ function sortItemsAlphabetically(array) {
         itemLi.innerHTML = `${itemName}`;
         ulitems.appendChild(itemLi);
     }   
-    alphaItemsDiv.appendChild(ul); 
+    alphaItemsDiv.appendChild(ulitems); 
           
 }
 
@@ -173,9 +173,6 @@ function addAnotherItem(e){
         form.insertBefore(itemInput, form.childNodes[2])
         itemsFormDiv.appendChild(form);
     }
-
-    
-
 }
 
 async function getAddressWithItems(e) {

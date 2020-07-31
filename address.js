@@ -32,13 +32,13 @@ class Address {
                         position: results[0].geometry.location
                     })
                     address.marker = marker;
-                    addressesArray.push(address)
+                    Address.allAddresses.push(address)
                     attachContentToMarker(marker, address.renderMarkerContent());
                     itemsFormDiv.style.display="none";
                     addressDiv.style.display="inline-block";
                     document.getElementById("address-items-form").remove();
                     createAddressForm.reset();
-                    sortItemsAlphabetically(addressesArray)
+                    sortItemsAlphabetically(Address.allAddresses)
               } else {
                 alert('Unable to find that address for the following reason: ' + status);
                 fetch(`http://localhost:3000/addresses/${addressId}`, {
@@ -92,6 +92,7 @@ class Address {
 
     editItemsOnAddress() {
         addressDiv.style.display="none"; 
+        alphaItemsDiv.style.display="none";
         const editItemsDiv = document.getElementById("edit-items");
         editItemsDiv.style.display="inline-block"
        
@@ -117,7 +118,6 @@ class Address {
             editItemsButton.setAttribute("data-item", item.id);
             editItemsButton.setAttribute("data-address", this.id)
             editItemsButton.setAttribute("id", "delete-item")
-            editItemsButton.setAttribute("value", "submit")
             editItemsButton.innerHTML = "Delete Item"
             editItemsButton.addEventListener("click", this.deleteItem)
 
@@ -127,6 +127,7 @@ class Address {
             ul.appendChild(li);
             
         }
+
         const deletMarkerAndItems = document.createElement("button");
         deletMarkerAndItems.setAttribute("data-deleteMarker", this.id)
         deletMarkerAndItems.setAttribute("id", "delete-marker-and-items");
@@ -171,12 +172,12 @@ class Address {
                 "Accept": "application/json",
             }
         })
+       
         e.target.parentElement.remove();
     } 
 
     deleteMarkerandItems(e) {
         e.preventDefault();
-        console.log(e);
         fetch(`${ADDRESS_URL}/${e.target.dataset.deletemarker}`, {
                     method: "DELETE", 
                     headers: {
@@ -187,12 +188,10 @@ class Address {
         const address = Address.findAddress(e.target.dataset.deletemarker)
         address.marker.setMap(null);
         Address.allAddresses = Address.allAddresses.filter(address => address.id != e.target.dataset.deletemarker)
-        console.log(address);
-        console.log(Address.allAddresses);
+        sortItemsAlphabetically(Address.allAddresses)
         document.getElementById("edit-items-form").remove();
         editItemsDiv.style.display ="none";
         addressDiv.style.display="inline-block";
-        debugger;
     }
 
     updateItemsOnAddress(e) {
@@ -207,6 +206,8 @@ class Address {
                 const updatedItemsOnAddress = new Address(addressData); //Creating new address with updated items list
                 updatedItemsOnAddress.marker = foundAddressMarker //Attaching marker from previous version of this address to new one
                 Address.allAddresses.push(updatedItemsOnAddress);
+                console.log(Address.allAddresses)
+                sortItemsAlphabetically(Address.allAddresses)
                 document.getElementById("edit-items-form").remove();
                 editItemsDiv.style.display ="none";
                 addressDiv.style.display="inline-block";
@@ -215,4 +216,4 @@ class Address {
             })
     }
 }
-const addressesArray = Address.allAddresses = []
+Address.allAddresses = []
