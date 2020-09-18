@@ -8,18 +8,34 @@
   <body>
     <div id="title">
       <h2>Knows Pickers</h2>
-      <h4>(for those who know)</h4>
+      <h5>(for those who know)</h5>
+      <div id="rules">
+        <p>Please place all items for giveaway in the <strong>alley</strong> behind your house.  Be kind to your neighbors and please be careful in choosing which items to place outside.</p>
+      </div>
+      <div>
+        <button id="signup">Sign Up</button>
+        <button id="login">Log In</button>
+        <button id="logout">Log Out</button>
+        <div id="signupform"></div>
+        <div id="loginform"></div>
+      </div>
       <p>
         <ol>
+          <li>
+            You must be LOGGED IN to create an address and list items to give away.
+          </li>
+          <li>
+            You DO NOT need to be LOGGED IN to look at markers.
+          </li>
           <li>
             You can hover over a marker to see the items available at that address.
           </li>
           <li>
-            You can click on a marker to load the items to the right of the map.
+            You can click on a marker to see get items to be deleted But you must be LOGGED IN to delete them.
           </li>
-
        </ol>
       </p>
+     
     </div>
     <main>
       <div id="map"></div>
@@ -51,6 +67,7 @@
     <script src="index.js"></script>
     <script src="address.js"></script>
     <script src="item.js"></script>
+    <script src="user.js"></script>
     
     <footer>
       <p>property of azharshahstl@yahoo.com 2020</p>

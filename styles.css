@@ -7,13 +7,13 @@
 html, body {
     /* height: 10%; */
     margin: 0;
-    padding: 2px;
+    padding: 1px;
   }
 
 #title {
     text-align: center;
     list-style-position: inside;
-    background-color: peachpuff;
+    background-color: rgb(39, 169, 192);
 }
 
 div#addressButton {
@@ -86,7 +86,28 @@ div#addressButton {
     display: none;
     padding: 4px;
     width: 26%;
+    height: 200px;
     position: absolute;
-    top: 40%;
+    top: 48%;
     right: 20px;
+    overflow: scroll;
+}
+
+#signupform { 
+    position: absolute;
+    right: 3%;
+    top: 3%;
+}
+
+#loginform { 
+    position: absolute;
+    right: 3%;
+    top: 3%;
+}
+
+#rules {
+    position: absolute;
+    float: left;
+    width: 200px;
+    top: 5%;
 }

@@ -4,15 +4,10 @@ class Address {
         this.id = addressDataObject.id
         this.streetNumber = addressDataObject.street_number
         this.streetName = addressDataObject.street_name
-        // this.streetName = this.capitalize(addressDataObject.street_name)
         this.zipCode = addressDataObject.zip_code
         this.items = addressDataObject.items   
         
     }
-
-    // capitalize(string) {
-    //     return string.charAt(0).toUppercase + string.slice(1);
-    // }
 
     static findAddress(id) {
         return this.allAddresses.find((address) => address.id == id)
@@ -36,7 +31,9 @@ class Address {
                     attachContentToMarker(marker, address.renderMarkerContent());
                     itemsFormDiv.style.display="none";
                     addressDiv.style.display="inline-block";
-                    document.getElementById("address-items-form").remove();
+                    if (document.getElementById("address-items-form")){
+                        document.getElementById("address-items-form").remove();
+                    }
                     createAddressForm.reset();
                     sortItemsAlphabetically(Address.allAddresses)
               } else {
@@ -165,33 +162,46 @@ class Address {
     
     deleteItem(e) {
         e.preventDefault()
-        fetch(`${ITEMS_URL}/${this.dataset.item}`, {
-            method: "DELETE", 
-            headers: {
-                'Content-Type': 'application/json',
-                "Accept": "application/json",
-            }
-        })
+        if ( !localStorage.jwt_token == ''){
+            fetch(`${ITEMS_URL}/${this.dataset.item}`, {
+                method: "DELETE", 
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Accept": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
+                }
+            })
+            e.target.parentElement.remove();
+        }
+        else {
+            alert('You must be logged in to delete an item.')
+        }
        
-        e.target.parentElement.remove();
+        
     } 
 
     deleteMarkerandItems(e) {
         e.preventDefault();
-        fetch(`${ADDRESS_URL}/${e.target.dataset.deletemarker}`, {
-                    method: "DELETE", 
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Accept": "application/json",
-                    }
-        })
-        const address = Address.findAddress(e.target.dataset.deletemarker)
-        address.marker.setMap(null);
-        Address.allAddresses = Address.allAddresses.filter(address => address.id != e.target.dataset.deletemarker)
-        sortItemsAlphabetically(Address.allAddresses)
-        document.getElementById("edit-items-form").remove();
-        editItemsDiv.style.display ="none";
-        addressDiv.style.display="inline-block";
+        if ( !localStorage.jwt_token == ''){
+            fetch(`${ADDRESS_URL}/${e.target.dataset.deletemarker}`, {
+                        method: "DELETE", 
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "Accept": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
+                        }
+            })
+            const address = Address.findAddress(e.target.dataset.deletemarker)
+            address.marker.setMap(null);
+            Address.allAddresses = Address.allAddresses.filter(address => address.id != e.target.dataset.deletemarker)
+            sortItemsAlphabetically(Address.allAddresses)
+            document.getElementById("edit-items-form").remove();
+            editItemsDiv.style.display ="none";
+            addressDiv.style.display="inline-block";
+        }
+        else {
+            alert('You must be logged in to delete a marker.')
+        }
     }
 
     updateItemsOnAddress(e) {

@@ -1,5 +1,5 @@
-class AddressesController < ApplicationController
-
+class Api::V1::AddressesController < ApplicationController
+    skip_before_action :authorized, only: [:index, :show]
     def index 
         addresses = Address.all 
         render json: addresses
@@ -17,7 +17,6 @@ class AddressesController < ApplicationController
 
     def destroy 
         address = Address.find(params[:id])
-        # binding.pry
         address.destroy 
     end
 

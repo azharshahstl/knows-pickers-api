@@ -1,6 +1,8 @@
-BASE_URL = "http://localhost:3000"
+BASE_URL = "http://localhost:3000/api/v1"
 ADDRESS_URL = `${BASE_URL}/addresses`
 ITEMS_URL = `${BASE_URL}/items`
+USERS_URL = `${BASE_URL}/users`
+AUTH_URL = `${BASE_URL}/login`
 
 const mainBody = document.querySelector("main");
 const addressDiv = document.getElementById("addressButton");
@@ -9,8 +11,13 @@ const cancelButton = document.getElementById("cancel-button");
 const addAddressButton = document.getElementById("add-button");
 const createAddressForm = document.getElementById("create-address-form");
 const itemsFormDiv = document.getElementById("items-form");
-const editItemsDiv = document.getElementById("edit-items")
-const alphaItemsDiv = document.getElementById("alpha-items")
+const editItemsDiv = document.getElementById("edit-items");
+const alphaItemsDiv = document.getElementById("alpha-items");
+const signup = document.getElementById("signup");
+const login = document.getElementById('login');
+const logout = document.getElementById('logout');
+const signupFormDiv = document.getElementById("signupform");
+const loginFormDiv = document.getElementById("loginform");
 
 document.head.appendChild(script);
 
@@ -18,23 +25,22 @@ const stl = { lat: 38.6270, lng: -90.1994 }
 
 document.addEventListener("DOMContentLoaded",() => {
 
-   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs&callback=initialMap`;
-   script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB0vn_sUDcekAhSN54M5itcNSl9o-SKiRs`; 
+   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCcbWghcM4sSN_J1rPvlFq4kJplEhsD2yc&callback=initialMap`;
+   script.src = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCcbWghcM4sSN_J1rPvlFq4kJplEhsD2yc`; 
    itemsFormDiv.style.display="none"; 
    editItemsDiv.style.display="none"; 
 
    fetch(ADDRESS_URL)
     .then(response => response.json())
-    .then(addressesData => {  console.log(addressesData)
-        // addressesData.forEach( (address) => {
-        //     const addressObject = new Address(address);
-        //     addressObject.geocodeLoader()
-        // })
+    .then(addressesData => {
+        addressesData.forEach( (address) => {
+        const addressObject = new Address(address);
+        addressObject.geocodeLoader()
+        })
         
     })
 
    loadAddressDiv();
-//    console.log(Address.allAddresses)
 })
 
 window.initialMap = function() {
@@ -47,16 +53,155 @@ window.initialMap = function() {
 
 };
 
-// fetch(ADDRESS_URL)
-// .then(response => response.json())
-// .then(addressData => {
-//     addressData.forEach( (address) => {
-//         const seedObject = new Address(address);
-//         seedObject.checkAddress();
-//     })
-// })
+const reload = () => {
+    if (!localStorage.jwt_token == ''){
+        localStorage.removeItem('jwt_token');
+        // location.replace("file:///Users/azharshah/Development/code/knows-pickers-api/index.html#");
+        alert ('You are now logged out.')
+    } 
+}
 
-const loadAddressDiv= () => {
+logout.addEventListener("click", reload)
+
+const getSignupForm = () => {
+    signupFormDiv.style.display="inline-block";
+        const form = document.createElement("form")
+        form.setAttribute("id", "signup-form");
+        form.setAttribute('method',"POST");
+        form.setAttribute('action',"#");
+
+        const email = document.createElement("input"); 
+        email.setAttribute('type',"email");
+        email.setAttribute('name',"email");
+        email.setAttribute('placeholder', "Email")
+        
+        const password = document.createElement("input");
+        password.setAttribute('type', 'password')
+        password.setAttribute('name','password')
+        password.setAttribute('placeholder', 'password')
+
+        const signupButton = document.createElement("button"); 
+        signupButton.setAttribute("id","signup-button");
+        signupButton.innerHTML = "Sign Up"
+        signupButton.addEventListener("click", submitSignup)
+        
+        form.appendChild(email);
+        form.appendChild(password);
+        form.appendChild(signupButton);
+        signupFormDiv.appendChild(form);
+}
+
+const loadSignupForm = () => {
+    if (!document.querySelector("#signup-form") && !document.querySelector("#login-form")) {
+        getSignupForm();
+    } else if (document.querySelector("#login-form")) {
+        document.getElementById("login-form").remove();
+        getSignupForm();
+    } else {
+        null
+    }
+}
+signup.addEventListener("click", loadSignupForm)
+
+const getLoginForm = () => {
+    loginFormDiv.style.display="inline-block";
+        const form = document.createElement("form")
+        form.setAttribute("id", "login-form");
+        form.setAttribute('method',"POST");
+        form.setAttribute('action',"#");
+
+        const email = document.createElement("input"); 
+        email.setAttribute('type',"email");
+        email.setAttribute('name',"email");
+        email.setAttribute('placeholder', "Email")
+        
+        const password = document.createElement("input");
+        password.setAttribute('type', 'password')
+        password.setAttribute('name','password')
+        password.setAttribute('placeholder', 'password')
+
+        const loginButton = document.createElement("button"); 
+        loginButton.setAttribute("id","login-button");
+        loginButton.innerHTML = "Log In"
+        loginButton.addEventListener("click", submitLogin)
+        
+        form.appendChild(email);
+        form.appendChild(password);
+        form.appendChild(loginButton);
+        loginFormDiv.appendChild(form);
+}
+
+const loadLoginForm = () => {
+    if (!document.querySelector("#signup-form") && !document.querySelector("#login-form")) {
+        getLoginForm();
+    } else if (document.querySelector("#signup-form")){
+        document.getElementById("signup-form").remove();
+        getLoginForm();
+    } else {
+        null
+    }
+}
+login.addEventListener("click", loadLoginForm)
+
+const submitLogin = (e) => {
+    e.preventDefault();
+    fetch(AUTH_URL, {
+        method: "POST", 
+        headers: {
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+          },
+        body: JSON.stringify({user: {email: e.target.form.elements[0].value, password: e.target.form.elements[1].value}})
+    })
+    .then(resp => resp.json())
+    .then(json => { 
+        if (json.error) {
+            alert (json.error)
+            document.getElementById("login-form").reset();
+            }
+        else {
+            localStorage.setItem('jwt_token', json.jwt)
+            document.getElementById("login-form").reset();
+            document.getElementById("login-form").remove();
+            login.addEventListener("click", loadLoginForm);
+            alert ("You are now logged in.")
+                if (document.getElementById("signup-form")){
+                    document.getElementById("signup-form").remove();
+                }
+            }    
+    })
+
+}
+
+
+const submitSignup = (e) => {
+    e.preventDefault();
+    fetch(USERS_URL, {
+        method: "POST", 
+        headers: {
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+          },
+        body: JSON.stringify({user: {email: e.target.form.elements[0].value, password: e.target.form.elements[1].value}})
+    })
+    .then(resp => resp.json())
+    .then(json => {
+        if (json.error) {
+            alert (json.error)
+            document.getElementById("signup-form").reset();
+        }
+        else {
+        localStorage.setItem('jwt_token', json.jwt )
+        document.getElementById("signup-form").reset();
+        document.getElementById("signup-form").remove();
+        signup.addEventListener("click", loadSignupForm)
+        const newUser = new User(json);
+        alert ('You are signed up and logged in.')
+        }
+    })
+} 
+
+const loadAddressDiv = () => {
     const h4 = document.createElement("h4");
     const button = document.createElement("button");
     
@@ -68,19 +213,25 @@ const loadAddressDiv= () => {
     addressDiv.appendChild(button);
     
     button.addEventListener("click", function () {
-        createAddressForm.style.display="inline-block";
-        addressDiv.style.display="none";
-        alphaItemsDiv.style.display="none";
+        if (!localStorage.jwt_token == ""){
+            createAddressForm.style.display="inline-block";
+            addressDiv.style.display="none";
+            alphaItemsDiv.style.display="none";}
+        else {
+            alert ('You must be looged in to create an address.')
+        }
+
     })
 }
 
 function sortItemsAlphabetically(array) {
-    const getItemsObjectsFromAdresses = array.map(address => address.items);
-    const flattenItemsArray = getItemsObjectsFromAdresses.flat();
+    const getItemsObjectsFromAddresses = array.map(address => address.items);
+    const flattenItemsArray = getItemsObjectsFromAddresses.flat();
     const itemNames = flattenItemsArray.map(item => item.name)
-    const alphabatizedItems = itemNames.sort();
+    const alphabatizedItems = itemNames.sort(function (a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
    
-
     alphaItemsDiv.style.display="inline-block";
     const ulitems = document.getElementById("ul-items")
     ulitems.innerHTML = '';
@@ -105,7 +256,8 @@ addAddressButton.addEventListener("click", function(e) {
         method: "POST", 
         headers: {
             'Content-Type': 'application/json',
-            "Accept": "application/json"
+            "Accept": "application/json",
+            Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
           },
         body: JSON.stringify({address: {street_number: e.target.form.elements[0].value, street_name: e.target.form.elements[1].value, zip_code: e.target.form.elements[2].value  }})
     })
@@ -185,7 +337,8 @@ async function getAddressWithItems(e) {
                method: 'POST', 
                headers: {
                    'Content-Type': 'application/json',
-                   "Accept": "application/json"
+                   "Accept": "application/json",
+                   Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
                },
                body: JSON.stringify({address_id: e.target.form.dataset.id, name: array[index].value })  
            })
